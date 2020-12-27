@@ -1,0 +1,15 @@
+type User {
+  id: ID!
+  username: String!
+  password: String!
+  nickname: String
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  roleId: String
+  remark: String
+  phone: String
+  createBy: String
+  updateBy: String
+}
+
