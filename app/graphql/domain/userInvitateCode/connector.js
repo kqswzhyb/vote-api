@@ -1,10 +1,9 @@
 'use strict';
 
 const DataLoader = require('dataloader');
-const { Op } = require('Sequelize');
-const { handleFilter } = require('../util/util.js');
+const { handleFilter } = require('../../utils/util.js');
 
-class UserConnector {
+class UserInvitateCodeConnector {
   constructor(ctx) {
     this.ctx = ctx;
     this.loader = new DataLoader(this.fetch.bind(this));
@@ -16,20 +15,20 @@ class UserConnector {
      * @returns {Promise.<*[]>}
      */
   fetch(ids) {
-    const users = this.ctx.app.model.User.findAll({
+    const userInvitateCodes = this.ctx.app.model.UserInvitateCode.findAll({
       where: {
         id: ids,
       },
     });
     return new Promise((resolve, reject) => {
-      users.then((res) => {
+      userInvitateCodes.then((res) => {
         res.length ? resolve(res) : resolve([{}]);
       });
     });
   }
 
   /**
-     * 查询多个用户信息
+     * 查询多个用户邀请码
      * @param ids
      * @returns {Promise.<Array.<V|Error>>|Promise<Array<Error | V>>}
      */
@@ -43,7 +42,7 @@ class UserConnector {
      */
   fetchList(data) {
     const { page = {}, filter = {} } = data;
-    const users = this.ctx.app.model.User.findAll({
+    const users = this.ctx.app.model.UserInvitateCode.findAll({
       where: {
         status: '0',
         ...handleFilter(filter),
@@ -67,4 +66,4 @@ class UserConnector {
   }
 }
 
-module.exports = UserConnector;
+module.exports = UserInvitateCodeConnector;

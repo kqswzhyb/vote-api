@@ -1,13 +1,22 @@
 const base = require('./common/base.js');
 
 module.exports = (app) => {
-  const { STRING, UUID } = app.Sequelize;
-
+  const { STRING, DATE,UUID } = app.Sequelize;
   const User = app.model.define('user', {
-    roleId: {
-      type: UUID,
+    qqOpenId: {
+      type: STRING(64),
       allowNull: false,
-      comment: '角色id',
+      comment: 'QQ授权标识',
+    },
+    qqLevel: {
+      type: STRING(64),
+      allowNull: false,
+      comment: 'QQ等级',
+    },
+    qqVip: {
+      type: STRING(64),
+      allowNull: false,
+      comment: '是否QQVIP用户',
     },
     username: {
       type: STRING(32),
@@ -21,18 +30,25 @@ module.exports = (app) => {
       allowNull: false,
       comment: '昵称',
     },
-    password: {
-      type: STRING(255),
-      allowNull: false,
-      comment: '密码',
+    lastLoginTime: {
+      type: DATE,
+      comment: '最后登录时间',
     },
-    phone: {
-      type: STRING(32),
-      allowNull: true,
-      comment: '手机号码',
+    lastVoteTime: {
+      type: DATE,
+      comment: '最后投票时间',
+    },
+    avatarId: {
+      type: UUID,
+      comment: '头像id',
     },
     ...base,
   });
+
+  User.associate = () => {
+    app.model.User.hasMany(app.model.UserInvitateCode,{ foreignKey:'user_id',targetKey: 'id'})
+  };
+
 
   return User;
 };

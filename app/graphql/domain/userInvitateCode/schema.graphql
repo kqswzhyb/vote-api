@@ -1,0 +1,15 @@
+type UserInvitateCode {
+  id: ID!
+  roundDetailId: String!
+  userId: String!
+  invitateCode: String!
+  expireTime: Date
+  useCount: Int
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}
+

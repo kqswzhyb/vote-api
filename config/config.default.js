@@ -9,6 +9,7 @@ module.exports = () => {
       port: '3306',
       username: 'root',
       password: 'root',
+      timezone: '+8:00'
     },
     proxyworker: {
       port: 10086,

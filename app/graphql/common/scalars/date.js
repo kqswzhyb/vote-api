@@ -9,7 +9,7 @@ module.exports = new GraphQLScalarType({
     return moment(new Date(value)).format('YYYY-MM-DD HH:mm:ss');
   },
   serialize(value) {
-    return moment(value).subtract(8, 'hours').format('YYYY-MM-DD HH:mm:ss');
+    return moment(value).format('YYYY-MM-DD HH:mm:ss');
   },
   parseLiteral(ast) {
     if (ast.kind === Kind.INT) {
