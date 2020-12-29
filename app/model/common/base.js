@@ -1,5 +1,5 @@
-const { uuidv4 } = require('uuid');
-const { UUID, STRING, DATE } = require('Sequelize');
+const uuid = require('uuid');
+const { UUID, STRING, DATE, ENUM } = require('Sequelize');
 
 module.exports = {
   id: {
@@ -7,12 +7,14 @@ module.exports = {
     unique: true,
     primaryKey: true,
     allowNull: false,
-    defaultValue: () => uuidv4().replace(/-/g, ''),
+    defaultValue: () => uuid.v4().replace(/-/g, ''),
   },
   status: {
-    type: STRING(1),
+    type: ENUM,
     allowNull: false,
+    values: ['0', '1'],
     comment: '状态',
+    defaultValue: '0',
   },
   createBy: {
     type: UUID,

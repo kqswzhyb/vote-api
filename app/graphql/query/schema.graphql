@@ -1,8 +1,17 @@
+interface Base {
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}
+
 type Query {
   user(id: ID!): User
-  users(id: [ID!]): [User]
-  userList(page: PageInput,filter: UserFilter): [User]
+  users(id: [ID!]): [User]!
+  userList(page: PageInput,filter: UserFilter): [User]!
   userInvitateCode(id: ID!): UserInvitateCode
-  userInvitateCodes(id: [ID!]): [UserInvitateCode]
-  userInvitateCodeList(page: PageInput): [UserInvitateCode]
+  userInvitateCodes(id: [ID!]): [UserInvitateCode]!
+  userInvitateCodeList(page: PageInput): [UserInvitateCode]!
 }

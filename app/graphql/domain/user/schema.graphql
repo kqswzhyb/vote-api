@@ -1,4 +1,4 @@
-type User {
+type User implements Base{
   id: ID!
   username: String!
   qqOpenId: String
@@ -8,7 +8,7 @@ type User {
   lastLoginTime: Date
   lastVoteTime: Date
   avatarId: String
-  userInvitateCode: [UserInvitateCode]
+  userInvitateCode: [UserInvitateCode]!
   createdAt: Date
   updatedAt: Date
   status: String

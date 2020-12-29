@@ -1,0 +1,4 @@
+type DeleteCallback {
+  result: String
+  message: String
+}

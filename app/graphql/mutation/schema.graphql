@@ -1,4 +1,5 @@
 type Mutation {
-  # User
-  createUser (id: ID!): User
+  createUser (input: CreateUserInput!): User
+  updateUser (id: ID!, input: UpdateUserInput!): User
+  deleteUser (id: ID!): DeleteCallback
 }

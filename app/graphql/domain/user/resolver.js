@@ -15,4 +15,18 @@ module.exports = {
       return ctx.connector.user.fetchList(data);
     },
   },
+  Mutation: {
+    //创建用户
+    createUser(root, data, ctx) {
+      return ctx.connector.user.createUser(data);
+    },
+    //更新用户
+    updateUser(root, data, ctx) {
+      return ctx.connector.user.updateUser(data);
+    },
+    //删除用户
+    deleteUser(root, data, ctx) {
+      return ctx.connector.user.deleteUser(data);
+    },
+  }
 };

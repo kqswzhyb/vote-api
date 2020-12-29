@@ -1,6 +1,7 @@
 'use strict';
 
 const DataLoader = require('dataloader');
+const moment = require('moment');
 const { handleFilter } = require('../../utils/util.js');
 
 class UserConnector {
@@ -48,7 +49,7 @@ class UserConnector {
         ...handleFilter(filter),
       },
       include: [{
-        attributes: [ 'id', 'useCount', 'userId' ],
+        as: 'userInvitateCode',
         model: this.ctx.app.model.UserInvitateCode,
       }],
       order: [
@@ -57,7 +58,6 @@ class UserConnector {
       limit: page.limit || 10,
       offset: page.offset || 0,
     });
-    console.log(users)
     return users;
   }
 
@@ -68,6 +68,38 @@ class UserConnector {
      */
   fetchById(id) {
     return this.loader.load(id);
+  }
+
+  /**
+   * 创建用户
+   */
+  createUser(data) {
+    const { input = {} } = data;
+    return this.ctx.app.model.User.create({...input,lastLoginTime:moment(new Date()).format('YYYY-MM-DD HH:mm:ss')})
+  }
+
+  /**
+   * 更新用户
+   */
+  updateUser(data) {
+    const { input = {},id } = data;
+    return new Promise((resolve)=>{
+      this.ctx.app.model.User.update(input, { where: { id }}).then((res)=>{
+        resolve(res[0]==1?this.loader.load(id):null)
+      })
+    })
+  }
+
+  /**
+   * 删除用户
+   */
+  deleteUser(data) {
+    const { id } = data;
+    return new Promise((resolve)=>{
+      this.ctx.app.model.User.destroy({ where: { id } }).then((res)=>{
+        resolve(res==1?{result:'success',message:'ok!'}:{result:'fail',message:'id is non-existent'});
+      })
+    })
   }
 }
 

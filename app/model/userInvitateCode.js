@@ -25,19 +25,16 @@ module.exports = (app) => {
     userId: {
       type: UUID,
       allowNull: false,
-      field: 'user_id',
-      references: {
-        model: 'user',
-        key: 'id',
-      },
       comment: '用户id',
     },
     ...base,
-  });
+  }, {
+    tableName: 'user_invitate_code'
+});
 
-  UserInvitateCode.associate = () => {
-    app.model.UserInvitateCode.belongsTo(app.model.User,{foreignKey: 'user_id', targetKey: 'id' })
-  };
+//   UserInvitateCode.associate = () => {
+//     app.model.UserInvitateCode.hasOne(app.model.User,{as: 'userInvitateCode', foreignKey: 'userId' })
+//   };
 
   return UserInvitateCode;
 };

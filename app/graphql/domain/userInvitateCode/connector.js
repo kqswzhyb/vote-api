@@ -15,13 +15,13 @@ class UserInvitateCodeConnector {
      * @returns {Promise.<*[]>}
      */
   fetch(ids) {
-    const userInvitateCodes = this.ctx.app.model.UserInvitateCode.findAll({
+    const userInvitateCode = this.ctx.app.model.UserInvitateCode.findAll({
       where: {
         id: ids,
       },
     });
     return new Promise((resolve, reject) => {
-      userInvitateCodes.then((res) => {
+      userInvitateCode.then((res) => {
         res.length ? resolve(res) : resolve([{}]);
       });
     });
@@ -42,7 +42,7 @@ class UserInvitateCodeConnector {
      */
   fetchList(data) {
     const { page = {}, filter = {} } = data;
-    const users = this.ctx.app.model.UserInvitateCode.findAll({
+    const userInvitateCodes = this.ctx.app.model.UserInvitateCode.findAll({
       where: {
         status: '0',
         ...handleFilter(filter),
@@ -53,7 +53,7 @@ class UserInvitateCodeConnector {
       limit: page.limit || 10,
       offset: page.offset || 0,
     });
-    return users;
+    return userInvitateCodes;
   }
 
   /**

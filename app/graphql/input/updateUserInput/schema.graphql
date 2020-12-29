@@ -1,0 +1,8 @@
+input UpdateUserInput {
+  nickname: String
+  remark: String
+  qqOpenId: String
+  qqLevel: String
+  qqVip: String
+  avatarId: String
+}

@@ -43,10 +43,14 @@ module.exports = (app) => {
       comment: '头像id',
     },
     ...base,
+  }, {
+    tableName: 'user'
   });
 
   User.associate = () => {
-    app.model.User.hasMany(app.model.UserInvitateCode,{ foreignKey:'user_id',targetKey: 'id'})
+    app.model.User.hasMany(app.model.UserInvitateCode,{as: 'userInvitateCode', foreignKey:'userId',sourceKey: 'id',scope: {
+      status: '0'
+    },})
   };
 
 

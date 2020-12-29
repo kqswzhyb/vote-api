@@ -1,4 +1,4 @@
-type UserInvitateCode {
+type UserInvitateCode implements Base{
   id: ID!
   roundDetailId: String!
   userId: String!
