@@ -6,8 +6,11 @@
   "dependencies": {
     "dataloader": "^2.0.0",
     "egg": "^2.15.1",
+    "egg-cors": "^2.2.3",
     "egg-development-proxyworker": "1.2.0",
     "egg-graphql": "^2.8.0",
+    "egg-jwt": "^3.1.7",
+    "egg-redis": "^2.4.0",
     "egg-scripts": "^2.11.0",
     "egg-sequelize": "^5.2.2",
     "egg-validate": "^2.0.2",

@@ -1,4 +1,4 @@
 type DeleteCallback {
-  result: String
+  code: String
   message: String
 }

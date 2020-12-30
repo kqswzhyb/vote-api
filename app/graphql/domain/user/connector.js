@@ -97,7 +97,7 @@ class UserConnector {
     const { id } = data;
     return new Promise((resolve)=>{
       this.ctx.app.model.User.destroy({ where: { id } }).then((res)=>{
-        resolve(res==1?{result:'success',message:'ok!'}:{result:'fail',message:'id is non-existent'});
+        resolve(res==1?{code:0,message:'成功'}:{code:1001,message:'id不存在'});
       })
     })
   }
