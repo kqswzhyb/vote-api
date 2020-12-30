@@ -24,12 +24,25 @@ module.exports = () => {
       client: {
         port: '6379',
         host: 'localhost',
-        password: '', 
+        password: '',
         db: 0
-      }, 
+      },
     },
     jwt: {
       secret: "123456"//自定义 token 的加密条件字符串
+    },
+    graphql: {
+      router: '/api/graphql',
+      // 是否加载到 app 上，默认开启
+      app: true,
+      // 是否加载到 agent 上，默认关闭
+      agent: false,
+      // 是否加载开发者工具 graphiql, 默认开启。路由同 router 字段。使用浏览器打开该可见。
+      graphiql: true,
+      // graphQL 路由前的拦截器
+      onPreGraphQL: function* (ctx) {},
+      // 开发工具 graphiQL 路由前的拦截器，建议用于做权限操作(如只提供开发者使用)
+      onPreGraphiQL: function* (ctx) {},
     },
     cors: {
       origin:'*',

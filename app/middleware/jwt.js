@@ -6,6 +6,10 @@ module.exports = options => {
         try {
           // 解码token
           decode = ctx.app.jwt.verify(token, options.secret);
+          let redisToken = ctx.service.redis.get(decode.username);
+          if(token!==redisToken){
+            throw new Error('token已过期')
+          }
           await next();
           console.log(decode);
         } catch (error) {
