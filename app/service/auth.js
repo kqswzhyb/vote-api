@@ -22,7 +22,7 @@ class AuthService extends Service {
     });
     if (!user) {
       return {
-        code: 1000,
+        code: "1000",
         message: "用户不存在",
       };
     }
@@ -39,7 +39,7 @@ class AuthService extends Service {
     ctx.service.redis.set(data.username,token,60*60*1000);
 
     return {
-      code: 0,
+      code: "0",
       message: "成功",
       data: token,
     };

@@ -14,9 +14,11 @@ module.exports = () => {
     proxyworker: {
       port: 10086,
     },
-    middleware: ['graphql'],
+    middleware: ['graphqlJwt','graphql'],
     security: {
       csrf: {
+        throughPath:['/api/auth/login'],
+        headerName:'authorization',
         ignore: () => true,
       },
     },
