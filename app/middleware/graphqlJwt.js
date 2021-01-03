@@ -1,13 +1,13 @@
 'use strict';
- 
+
 // Notice that this path is totally changed, because this function isn't
 // directly exposed to the public, now we must still use that for the middle-
 // ware.
 const {graphqlKoa} = require('apollo-server-koa/dist/koaApollo');
- 
+
 // This has been newly imported, because in v2 of apollo-server, this is removed.
 const {resolveGraphiQLString} = require('apollo-server-module-graphiql');
- 
+
 /**
  This function is directly copied from:
  https://github.com/apollographql/apollo-server/blob/300c0cd12b56be439b206d55131e1b93a9e6dade/packages/apollo-server-koa/src/koaApollo.ts#L51
@@ -29,23 +29,23 @@ function graphiqlKoa(options) {
             });
     };
 }
- 
+
 /**
  * token鉴权 中间件
  * @param options
  * @param app
  * @returns {graphqlJwt}
  */
- 
+
 module.exports = (_, app) => {
     const options = app.config.graphql;
     const graphQLRouter = options.router;
     let graphiql = true;
- 
+
     if (options.graphiql === false) {
         graphiql = false;
     }
- 
+
     /**
      * 设置token超时 或者 失效
      */
@@ -75,7 +75,7 @@ module.exports = (_, app) => {
         }
         return tokenc === redisToken;
     };
- 
+
     return async (ctx, next) => {
         // 当前请求的路径
         const url = ctx.url;
@@ -88,7 +88,7 @@ module.exports = (_, app) => {
             await next();
             return;
         }
-        if (ctx.request.body.query) {
+        if (ctx.request.body.query||ctx.request.method==='GET') {
             await next();
             return;
         }
