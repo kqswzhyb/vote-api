@@ -6,10 +6,6 @@ module.exports = {
     user(root, { id }, ctx) {
       return ctx.connector.user.fetchById(id);
     },
-    // 查询多个用户
-    users(root, { id }, ctx) {
-      return ctx.connector.user.fetchByIds(id);
-    },
     // 查询所有用户
     userList(root, data, ctx) {
       return ctx.connector.user.fetchList(data);
@@ -18,11 +14,11 @@ module.exports = {
   Mutation: {
     //创建用户
     createUser(root, data, ctx) {
-      return ctx.connector.user.createUser(data);
+      return ctx.connector.user.createUser(data,ctx);
     },
     //更新用户
     updateUser(root, data, ctx) {
-      return ctx.connector.user.updateUser(data);
+      return ctx.connector.user.updateUser(data,ctx);
     },
     //删除用户
     deleteUser(root, data, ctx) {

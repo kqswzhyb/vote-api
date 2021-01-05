@@ -7,7 +7,7 @@ module.exports = options => {
         // 解码token
         const tokenc = (token+'').slice(7);
         decode = ctx.app.jwt.verify(tokenc, options.secret);
-        let redisToken = await ctx.service.redis.get(decode.username);
+        let redisToken = await ctx.service.redis.get(decode.id);
         if(tokenc!==redisToken){
           throw new Error('token已过期')
         }

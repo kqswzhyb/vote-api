@@ -28,15 +28,6 @@ class UserInvitateCodeConnector {
   }
 
   /**
-     * 查询多个用户邀请码
-     * @param ids
-     * @returns {Promise.<Array.<V|Error>>|Promise<Array<Error | V>>}
-     */
-  fetchByIds(ids) {
-    return this.loader.loadMany(ids);
-  }
-
-  /**
      * 查询所有
      * @returns {*}
      */

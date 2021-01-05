@@ -5,7 +5,7 @@ class AuthService extends Service {
   // 登录
   async login(data) {
     const { ctx, app } = this
-    const current = new Date().getTime()
+    const current = new Date()
     const createRule = {
       username: {
         type: 'string',
@@ -27,8 +27,8 @@ class AuthService extends Service {
       }
     }
     const token = app.jwt.sign(
-      Object.assign({}, data, {
-        iat: current,
+      Object.assign({}, user.dataValues, {
+        iat: current.getTime(),
       }),
       app.config.jwt.secret,
       {
@@ -36,10 +36,10 @@ class AuthService extends Service {
       },
     )
     ctx.app.model.User.update(
-      { lastLoginTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss') },
+      { lastLoginTime: moment(current).format('YYYY-MM-DD HH:mm:ss') },
       { where: data },
     )
-    ctx.service.redis.set(data.username, token, 60 * 60 * 1000)
+    ctx.service.redis.set(user.id, token, 60 * 60 * 1000)
 
     return {
       code: '0',
@@ -52,20 +52,17 @@ class AuthService extends Service {
   async logout() {
     const { ctx, app } = this
     const token = ctx.request.header['authorization'].slice(7)
-    let username
+    let id
     try {
       const decode = ctx.app.jwt.verify(token, app.config.jwt.secret)
-      username = decode.username
+      id = decode.id
     } catch (err) {
       return {
         code: '1',
         message: err,
       }
     }
-    ctx.service.redis.del(username)
-    ctx.service.redis.get(username).then(res=>{
-      console.log(res)
-    })
+    ctx.service.redis.del(id)
 
     return {
       code: '0',

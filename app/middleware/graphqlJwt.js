@@ -69,7 +69,7 @@ module.exports = (_, app) => {
         let redisToken = null
         try {
             const decode = ctx.app.jwt.verify(tokenc, app.config.jwt.secret);
-            redisToken = await ctx.service.redis.get(decode.username);
+            redisToken = await ctx.service.redis.get(decode.id);
         }catch {
             return false
         }

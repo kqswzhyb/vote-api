@@ -9,9 +9,9 @@ interface Base {
 
 type Query {
   user(id: ID!): User
-  users(id: [ID!]): [User]!
   userList(page: PageInput,filter: UserFilter): [User]!
   userInvitateCode(id: ID!): UserInvitateCode
-  userInvitateCodes(id: [ID!]): [UserInvitateCode]!
   userInvitateCodeList(page: PageInput): [UserInvitateCode]!
+  role(id: ID!): Role
+  roleList(page: PageInput): [Role]!
 }

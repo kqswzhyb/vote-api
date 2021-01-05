@@ -5,10 +5,10 @@ class UserService extends Service {
   async info() {
     const { ctx, app } = this;
     const token= ctx.request.header['authorization'].slice(7)
-    let username
+    let id
     try {
        const decode= ctx.app.jwt.verify(token, app.config.jwt.secret)
-       username = decode.username
+       id = decode.id
     }catch(err){
       return {
         code: "1",
@@ -16,7 +16,7 @@ class UserService extends Service {
       };
     }
     const user = await ctx.model.User.findOne({
-      where: {username},
+      where: {id},
     });
     if (!user) {
       return {

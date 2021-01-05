@@ -5,4 +5,6 @@ input UpdateUserInput {
   qqLevel: String
   qqVip: String
   avatarId: String
+  roleId: String
+  status: String
 }

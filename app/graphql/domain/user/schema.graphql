@@ -8,6 +8,7 @@ type User implements Base{
   lastLoginTime: Date
   lastVoteTime: Date
   avatarId: String
+  role: Role
   userInvitateCode: [UserInvitateCode]!
   createdAt: Date
   updatedAt: Date

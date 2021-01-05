@@ -1,0 +1,11 @@
+type Role implements Base{
+  id: ID!
+  name: String!
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}
+
