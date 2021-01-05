@@ -3,6 +3,11 @@
 // had enabled by egg
 // exports.static = true;
 
+exports.swaggerdoc = {
+  enable: true,   // 是否启用。
+  package: 'egg-swagger-doc', // 指定包名称。
+};
+
 exports.sequelize = {
   enable: true,
   package: 'egg-sequelize',

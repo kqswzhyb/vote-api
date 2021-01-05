@@ -1,12 +1,12 @@
-type Role implements Base{
+type RoleMenu implements Base{
   id: ID!
-  name: String!
+  roleId: String!
+  menuId: String!
   createdAt: Date
   updatedAt: Date
   status: String
   remark: String
   createBy: String
   updateBy: String
-  roleMenu: [RoleMenu]!
 }
 

@@ -13,6 +13,7 @@
     "egg-redis": "^2.4.0",
     "egg-scripts": "^2.11.0",
     "egg-sequelize": "^5.2.2",
+    "egg-swagger-doc": "^2.3.2",
     "egg-validate": "^2.0.2",
     "graphql": "^14.7.0",
     "lodash": "^4.17.19",

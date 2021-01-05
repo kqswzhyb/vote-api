@@ -18,5 +18,16 @@ module.exports = (app) => {
     }
   );
 
+  Role.associate = () => {
+    app.model.Role.hasMany(app.model.RoleMenu, {
+      as: "roleMenu",
+      foreignKey: "roleId",
+      sourceKey: "id",
+      scope: {
+        status: "0",
+      },
+    });
+  };
+
   return Role;
 };

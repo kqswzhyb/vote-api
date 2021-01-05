@@ -6,4 +6,5 @@ input CreateUserInput {
   qqLevel: String
   qqVip: String
   avatarId: String
+  createBy: String
 }

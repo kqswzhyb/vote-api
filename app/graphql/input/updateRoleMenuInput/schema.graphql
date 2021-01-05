@@ -1,0 +1,7 @@
+input UpdateRoleMenuInput {
+  roleId: String
+  menuId: String
+  status: String
+  remark: String
+  updateBy: String
+}

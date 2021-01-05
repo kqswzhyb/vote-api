@@ -2,6 +2,11 @@ type Mutation {
   createUser (input: CreateUserInput!): User
   updateUser (id: ID!, input: UpdateUserInput!): User
   deleteUser (id: ID!): DeleteCallback
+
   createRole (input: CreateUserInput!): Role
   updateRole (id: ID!, input: UpdateRoleInput!): Role
+
+  createRoleMenu (input: CreateRoleMenuInput!): RoleMenu
+  updateRoleMenu (id: ID!, input: UpdateRoleMenuInput!): RoleMenu
+  deleteRoleMenu (id: ID!): DeleteCallback
 }

@@ -13,5 +13,7 @@ type Query {
   userInvitateCode(id: ID!): UserInvitateCode
   userInvitateCodeList(page: PageInput): [UserInvitateCode]!
   role(id: ID!): Role
-  roleList(page: PageInput): [Role]!
+  roleList(page: PageInput,filter: RoleFilter): [Role]!
+  roleMenu(id: ID!): RoleMenu
+  roleMenuList(page: PageInput): [RoleMenu]!
 }

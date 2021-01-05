@@ -27,6 +27,12 @@ class UserConnector {
         {
           as: "role",
           model: this.ctx.app.model.Role,
+          include: [
+            {
+              as: "roleMenu",
+              model: this.ctx.app.model.RoleMenu,
+            },
+          ],
         },
       ],
       order: [["updatedAt", "DESC"]],
