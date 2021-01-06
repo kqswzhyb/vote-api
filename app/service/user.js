@@ -18,6 +18,28 @@ class UserService extends Service {
     }
     const user = await ctx.model.User.findOne({
       where: {id},
+      include: [
+        {
+          as: "userInvitateCode",
+          model: this.ctx.app.model.UserInvitateCode,
+        },
+        {
+          as: "role",
+          model: this.ctx.app.model.Role,
+          include: [
+            {
+              as: "roleMenu",
+              model: this.ctx.app.model.RoleMenu,
+              include: [
+                {
+                  as: "menu",
+                  model: this.ctx.app.model.Menu,
+                },
+              ],
+            },
+          ],
+        },
+      ],
     });
     if (!user) {
       return {

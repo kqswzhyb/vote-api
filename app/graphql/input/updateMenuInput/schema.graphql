@@ -1,0 +1,12 @@
+input UpdateMenuInput {
+  name: String!
+  permission: String!
+  path: String!
+  parentId: String!
+  type: String!
+  sort: Int
+  icon: String
+  status: String
+  remark: String
+  updateBy: String
+}

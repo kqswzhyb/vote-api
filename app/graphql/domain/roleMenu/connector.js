@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const DataLoader = require('dataloader');
-const { handleFilter } = require('../../utils/util.js');
-const errorMap = require('../../utils/errorMap')
+const DataLoader = require("dataloader");
+const { handleFilter } = require("../../utils/util.js");
+const errorMap = require("../../utils/errorMap");
 
 class RoleMenuConnector {
   constructor(ctx) {
@@ -24,19 +24,23 @@ class RoleMenuConnector {
   }
 
   /**
-     * 查询所有
-     * @returns {*}
-     */
+   * 查询所有
+   * @returns {*}
+   */
   fetchList(data) {
     const { page = {}, filter = {} } = data;
     const roleMenus = this.ctx.app.model.RoleMenu.findAll({
       where: {
-        status: '0',
+        status: "0",
         ...handleFilter(filter),
       },
-      order: [
-        ['updatedAt', 'DESC'],
+      include: [
+        {
+          as: "menu",
+          model: this.ctx.app.model.Menu,
+        },
       ],
+      order: [["updatedAt", "DESC"]],
       limit: page.limit || 10,
       offset: page.offset || 0,
     });
@@ -44,7 +48,18 @@ class RoleMenuConnector {
   }
 
   fetchById(id) {
-    return this.loader.load(id);
+    return this.ctx.app.model.RoleMenu.findOne({
+      where: {
+        status: "0",
+        id,
+      },
+      include: [
+        {
+          as: "menu",
+          model: this.ctx.app.model.Menu,
+        },
+      ],
+    });
   }
 
   /**
@@ -66,9 +81,12 @@ class RoleMenuConnector {
     const userId = getOperator(ctx);
     const { input = {}, id } = data;
     return new Promise((resolve) => {
-      this.ctx.app.model.RoleMenu.update(Object.assign({}, input, { updateBy: userId }), {
-        where: { id },
-      }).then((res) => {
+      this.ctx.app.model.RoleMenu.update(
+        Object.assign({}, input, { updateBy: userId }),
+        {
+          where: { id },
+        }
+      ).then((res) => {
         resolve(res[0] == 1 ? this.fetchById(id) : null);
       });
     });

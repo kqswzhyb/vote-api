@@ -16,4 +16,6 @@ type Query {
   roleList(page: PageInput,filter: RoleFilter): [Role]!
   roleMenu(id: ID!): RoleMenu
   roleMenuList(page: PageInput): [RoleMenu]!
+  menu(id: ID!): Menu
+  menuList(page: PageInput): [Menu]!
 }

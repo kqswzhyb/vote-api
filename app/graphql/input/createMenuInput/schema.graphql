@@ -1,0 +1,11 @@
+input CreateMenuInput {
+  name: String!
+  permission: String!
+  path: String!
+  parentId: String!
+  type: String!
+  sort: Int
+  icon: String
+  createBy: String
+  remark: String
+}

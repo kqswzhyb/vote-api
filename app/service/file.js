@@ -34,6 +34,7 @@ class FileService extends Service {
           Body: fs.createReadStream(filePath),
         },
         async (err, data) => {
+          fs.unlinkSync(filePath);
           if (err) {
             resolve({
               code: "2001",

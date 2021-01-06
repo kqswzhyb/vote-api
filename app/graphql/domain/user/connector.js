@@ -32,6 +32,12 @@ class UserConnector {
             {
               as: "roleMenu",
               model: this.ctx.app.model.RoleMenu,
+              include: [
+                {
+                  as: "menu",
+                  model: this.ctx.app.model.Menu,
+                },
+              ],
             },
           ],
         },
@@ -47,7 +53,7 @@ class UserConnector {
    * @param id
    * @returns {Promise<V> | Promise.<V>}
    */
-  fetchById(id) {
+  async fetchById(id) {
     return this.ctx.app.model.User.findOne({
       where: {
         status: "0",
@@ -61,6 +67,18 @@ class UserConnector {
         {
           as: "role",
           model: this.ctx.app.model.Role,
+          include: [
+            {
+              as: "roleMenu",
+              model: this.ctx.app.model.RoleMenu,
+              include: [
+                {
+                  as: "menu",
+                  model: this.ctx.app.model.Menu,
+                },
+              ],
+            },
+          ],
         },
       ],
     });

@@ -8,5 +8,6 @@ type RoleMenu implements Base{
   remark: String
   createBy: String
   updateBy: String
+  menu: Menu
 }
 

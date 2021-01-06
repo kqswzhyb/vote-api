@@ -37,6 +37,12 @@ class RoleConnector {
         {
           as: "roleMenu",
           model: this.ctx.app.model.RoleMenu,
+          include: [
+            {
+              as: "menu",
+              model: this.ctx.app.model.Menu,
+            },
+          ],
         },
       ],
       order: [["updatedAt", "DESC"]],
@@ -56,6 +62,12 @@ class RoleConnector {
         {
           as: "roleMenu",
           model: this.ctx.app.model.RoleMenu,
+          include: [
+            {
+              as: "menu",
+              model: this.ctx.app.model.Menu,
+            },
+          ],
         },
       ],
     });
@@ -67,10 +79,18 @@ class RoleConnector {
   createRole(data, ctx) {
     const id = getOperator(ctx);
     const { input = {} } = data;
-    return this.ctx.app.model.Role.create({
+    const role = this.ctx.app.model.Role.create({
       ...input,
       createBy: id,
     });
+    role.then(res=>{
+        this.ctx.app.model.RoleMenu.create({
+            roleId: res.dataValues.id,
+            menuId: '1',
+            createBy: id,
+        });
+    })
+    return role
   }
 
   /**

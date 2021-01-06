@@ -2,7 +2,7 @@ const base = require("./common/base.js");
 
 module.exports = (app) => {
   const { STRING, DATE, UUID } = app.Sequelize;
-  const User = app.model.define(
+  return app.model.define(
     "user",
     {
       qqOpenId: {
@@ -54,25 +54,4 @@ module.exports = (app) => {
       tableName: "user",
     }
   );
-
-  User.associate = () => {
-    app.model.User.hasMany(app.model.UserInvitateCode, {
-      as: "userInvitateCode",
-      foreignKey: "userId",
-      sourceKey: "id",
-      scope: {
-        status: "0",
-      },
-    });
-    app.model.User.hasOne(app.model.Role, {
-      as: "role",
-      foreignKey: "id",
-      sourceKey: "roleId",
-      scope: {
-        status: "0",
-      },
-    });
-  };
-
-  return User;
 };

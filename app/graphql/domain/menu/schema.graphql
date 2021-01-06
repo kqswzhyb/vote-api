@@ -1,0 +1,17 @@
+type Menu implements Base{
+  id: ID!
+  name: String!
+  permission: String!
+  path: String!
+  parentId: String!
+  icon: String
+  sort: Int
+  type: String!
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}
+

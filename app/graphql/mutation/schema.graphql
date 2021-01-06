@@ -9,4 +9,8 @@ type Mutation {
   createRoleMenu (input: CreateRoleMenuInput!): RoleMenu
   updateRoleMenu (id: ID!, input: UpdateRoleMenuInput!): RoleMenu
   deleteRoleMenu (id: ID!): DeleteCallback
+
+  createMenu (input: CreateMenuInput!): Menu
+  updateMenu (id: ID!, input: UpdateMenuInput!): Menu
+  deleteMenu (id: ID!): DeleteCallback
 }

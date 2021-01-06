@@ -3,7 +3,7 @@ const base = require("./common/base.js");
 module.exports = (app) => {
   const { STRING } = app.Sequelize;
 
-  const Role = app.model.define(
+  return app.model.define(
     "role",
     {
       name: {
@@ -17,17 +17,4 @@ module.exports = (app) => {
       tableName: "role",
     }
   );
-
-  Role.associate = () => {
-    app.model.Role.hasMany(app.model.RoleMenu, {
-      as: "roleMenu",
-      foreignKey: "roleId",
-      sourceKey: "id",
-      scope: {
-        status: "0",
-      },
-    });
-  };
-
-  return Role;
 };
