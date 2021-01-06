@@ -6,4 +6,6 @@ module.exports = (app) => {
   app.get('/api/auth/logout',jwt, 'auth.logout');
 
   app.get('/api/user/info',jwt, 'user.info');
+
+  app.post('/api/file/simpleUpload',jwt, 'file.simpleUpload');
 };

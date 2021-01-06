@@ -1,4 +1,5 @@
 const Service = require("egg").Service;
+const errorMap = require("../graphql/utils/errorMap");
 
 class UserService extends Service {
   // 个人信息
@@ -21,7 +22,7 @@ class UserService extends Service {
     if (!user) {
       return {
         code: "1000",
-        message: "用户不存在",
+        message: errorMap["1000"],
       };
     }
 

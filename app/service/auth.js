@@ -1,5 +1,6 @@
 const Service = require('egg').Service
 const moment = require('moment')
+const errorMap = require("../graphql/utils/errorMap");
 
 class AuthService extends Service {
   // 登录
@@ -23,7 +24,7 @@ class AuthService extends Service {
     if (!user) {
       return {
         code: '1000',
-        message: '用户不存在',
+        message: errorMap["1000"],
       }
     }
     const token = app.jwt.sign(

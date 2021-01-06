@@ -7,6 +7,7 @@ const {graphqlKoa} = require('apollo-server-koa/dist/koaApollo');
 
 // This has been newly imported, because in v2 of apollo-server, this is removed.
 const {resolveGraphiQLString} = require('apollo-server-module-graphiql');
+const errorMap = require("../graphql/utils/errorMap");
 
 /**
  This function is directly copied from:
@@ -49,12 +50,11 @@ module.exports = (_, app) => {
     /**
      * 设置token超时 或者 失效
      */
-    const setTokenInvalid = (ctx) => {
+    const setTokenInvalid = (ctx,code) => {
         ctx.status = 401;
         ctx.body = {
-            code: 401,
-            message: 'token失效或解析错误',
-            data: null
+            code,
+            message: errorMap[code]
         }
     };
     /**
@@ -98,13 +98,13 @@ module.exports = (_, app) => {
         const token = ctx.request.header[csrf.headerName];
         // 如果token不存在 则返回 状态码为401
         if (!token) {
-            setTokenInvalid(ctx);
+            setTokenInvalid(ctx,"1");
         } else {
             // 获取登录状态
             const timeState = getTimeout(ctx, token);
             // 如果登录超时 则返回
             if (!timeState) {
-                setTokenInvalid(ctx);
+                setTokenInvalid(ctx,"2");
             } else {
                 /* 如果接口Graphql则走此处要做下特殊处理*/
                 if (ctx.path === graphQLRouter) {

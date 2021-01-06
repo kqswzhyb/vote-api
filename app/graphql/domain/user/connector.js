@@ -2,6 +2,7 @@
 
 const moment = require("moment");
 const { handleFilter, getOperator } = require("../../utils/util.js");
+const errorMap = require('../../utils/errorMap')
 
 class UserConnector {
   constructor(ctx) {
@@ -107,7 +108,7 @@ class UserConnector {
         resolve(
           res == 1
             ? { code: "0", message: "成功" }
-            : { code: "1001", message: "id不存在" }
+            : { code: "1001", message: errorMap["1001"] }
         );
       });
     });

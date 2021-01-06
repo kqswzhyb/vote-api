@@ -2,6 +2,7 @@
 
 const DataLoader = require('dataloader');
 const { handleFilter } = require('../../utils/util.js');
+const errorMap = require('../../utils/errorMap')
 
 class RoleMenuConnector {
   constructor(ctx) {
@@ -83,7 +84,7 @@ class RoleMenuConnector {
         resolve(
           res == 1
             ? { code: "0", message: "成功" }
-            : { code: "1001", message: "id不存在" }
+            : { code: "1001", message: errorMap["1001"] }
         );
       });
     });
