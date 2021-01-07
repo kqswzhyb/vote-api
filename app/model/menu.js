@@ -18,12 +18,10 @@ module.exports = (app) => {
       },
       path: {
         type: STRING(50),
-        allowNull: false,
         comment: "前端路径",
       },
       parentId: {
         type: UUID,
-        allowNull: false,
         comment: "父级id",
       },
       icon: {

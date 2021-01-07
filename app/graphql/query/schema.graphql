@@ -10,6 +10,7 @@ interface Base {
 type Query {
   user(id: ID!): User
   userList(page: PageInput,filter: UserFilter): [User]!
+  userCount(filter: UserFilter): Count
   userInvitateCode(id: ID!): UserInvitateCode
   userInvitateCodeList(page: PageInput): [UserInvitateCode]!
   role(id: ID!): Role

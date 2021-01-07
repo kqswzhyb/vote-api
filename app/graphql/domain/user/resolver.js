@@ -10,6 +10,10 @@ module.exports = {
     userList(root, data, ctx) {
       return ctx.connector.user.fetchList(data);
     },
+    // 查询总数
+    userCount(root, data, ctx) {
+      return ctx.connector.user.fetchCount(data);
+    },
   },
   Mutation: {
     //创建用户

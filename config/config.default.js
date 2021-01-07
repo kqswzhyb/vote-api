@@ -41,6 +41,10 @@ module.exports = () => {
       port: '3306',
       username: 'root',
       password: 'root',
+      dialectOptions: {
+        dateStrings: true,
+        typeCast: true
+      },
       timezone: '+8:00'
     },
     proxyworker: {

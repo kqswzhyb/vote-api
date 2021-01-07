@@ -1,23 +1,14 @@
 const Service = require("egg").Service;
 const errorMap = require("../graphql/utils/errorMap");
+const { getOperator } = require("../graphql/utils/util");
 
 class UserService extends Service {
   // 个人信息
   async info() {
-    const { ctx, app } = this;
-    const token= ctx.request.header['authorization'].slice(7)
-    let id
-    try {
-       const decode= ctx.app.jwt.verify(token, app.config.jwt.secret)
-       id = decode.id
-    }catch(err){
-      return {
-        code: "1",
-        message: err,
-      };
-    }
+    const { ctx } = this;
+    const id = getOperator(ctx);
     const user = await ctx.model.User.findOne({
-      where: {id},
+      where: { id },
       include: [
         {
           as: "userInvitateCode",
@@ -26,10 +17,12 @@ class UserService extends Service {
         {
           as: "role",
           model: this.ctx.app.model.Role,
+          attributes: ['id','name'],
           include: [
             {
               as: "roleMenu",
               model: this.ctx.app.model.RoleMenu,
+              attributes: ['id'],
               include: [
                 {
                   as: "menu",
@@ -41,6 +34,7 @@ class UserService extends Service {
         },
       ],
     });
+
     if (!user) {
       return {
         code: "1000",

@@ -49,6 +49,23 @@ class UserConnector {
   }
 
   /**
+   * 查询总数
+   * @returns {*}
+   */
+  async fetchCount(data) {
+    const { filter = {} } = data;
+    const count = await this.ctx.app.model.User.count({
+      where: {
+        status: "0",
+        ...handleFilter(filter),
+      },
+    });
+    return {
+      total: count
+    }
+  }
+
+  /**
    * 查询单个
    * @param id
    * @returns {Promise<V> | Promise.<V>}
