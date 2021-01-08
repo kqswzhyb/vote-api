@@ -1,0 +1,22 @@
+type File implements Base {
+  id: ID!
+  recordId: String!
+  fileName: String!
+  filePath: String!
+  fileFullPath: String!
+  fileExt: String!
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}
+
+input FileInput {
+  recordId: String
+  fileName: String!
+  filePath: String!
+  fileFullPath: String!
+  fileExt: String!
+}

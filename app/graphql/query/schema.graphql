@@ -19,4 +19,5 @@ type Query {
   roleMenuList(page: PageInput): [RoleMenu]!
   menu(id: ID!): Menu
   menuList(page: PageInput): [Menu]!
+  file(id: ID!): File
 }

@@ -3,6 +3,17 @@ const { Op } = require("Sequelize");
 exports.handleFilter = (filter) => {
   Object.keys(filter).forEach((v) => {
     filter[v] = JSON.parse(filter[v]);
+    if(filter[v].cond === "rangeTime"){
+      if(filter[v].value.length===2){
+        filter[v] = {
+          [Op.gte]: filter[v].value[0],
+          [Op.lte]: filter[v].value[1],
+        }
+      }else {
+        delete filter[v]
+      }
+      return
+    }
     if (filter[v].cond === "and") {
       filter[v] = filter[v].value;
     } else {

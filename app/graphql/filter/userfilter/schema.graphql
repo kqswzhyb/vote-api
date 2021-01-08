@@ -1,4 +1,10 @@
 input UserFilter {
   username: String
   nickname: String
+  createdAt: String
+  qqLevel: String
+  qqVip: String
+  roleId: String
+  lastLoginTime: String
+  lastVoteTime: String
 }

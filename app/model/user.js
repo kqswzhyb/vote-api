@@ -40,10 +40,6 @@ module.exports = (app) => {
         type: DATE,
         comment: "最后投票时间",
       },
-      avatarId: {
-        type: UUID,
-        comment: "头像id",
-      },
       roleId: {
         type: UUID,
         comment: "角色id",

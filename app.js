@@ -33,5 +33,13 @@ module.exports = (app) => {
         status: "0",
       },
     });
+    app.model.User.hasOne(app.model.File, {
+      as: "file",
+      foreignKey: "recordId",
+      sourceKey: "id",
+      scope: {
+        status: "0",
+      },
+    });
   });
 };

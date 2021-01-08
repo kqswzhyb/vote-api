@@ -1,8 +1,9 @@
 "use strict";
 
 const moment = require("moment");
+const UUID = require("uuid");
 const { handleFilter, getOperator } = require("../../utils/util.js");
-const errorMap = require('../../utils/errorMap')
+const errorMap = require("../../utils/errorMap");
 
 class UserConnector {
   constructor(ctx) {
@@ -24,6 +25,10 @@ class UserConnector {
         {
           as: "userInvitateCode",
           model: this.ctx.app.model.UserInvitateCode,
+        },
+        {
+          as: "file",
+          model: this.ctx.app.model.File,
         },
         {
           as: "role",
@@ -61,8 +66,8 @@ class UserConnector {
       },
     });
     return {
-      total: count
-    }
+      total: count,
+    };
   }
 
   /**
@@ -80,6 +85,10 @@ class UserConnector {
         {
           as: "userInvitateCode",
           model: this.ctx.app.model.UserInvitateCode,
+        },
+        {
+          as: "file",
+          model: this.ctx.app.model.File,
         },
         {
           as: "role",
@@ -104,33 +113,111 @@ class UserConnector {
   /**
    * 创建用户
    */
-  createUser(data, ctx) {
+  async createUser(data, ctx) {
     const id = getOperator(ctx);
     const { input = {} } = data;
-    return this.ctx.app.model.User.create({
-      ...input,
-      createBy: id,
-      roleId: '1',
-      lastLoginTime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-    });
+    const recordId = UUID.v4().replace(/-/g, "");
+    let transaction;
+    try {
+      transaction = await ctx.model.transaction();
+      if (input.fileList) {
+        input.fileList.forEach(async (v) => {
+          await this.ctx.app.model.File.create(
+            {
+              recordId,
+              fileName: v.fileName,
+              filePath: v.filePath,
+              fileExt: v.fileExt,
+              fileFullPath: v.filePath + "/" + v.fileName + "." + v.fileExt,
+              createBy: id,
+            },
+            {
+              transaction,
+            }
+          );
+        });
+        delete input.fileList;
+      }
+
+      await this.ctx.app.model.User.create(
+        {
+          id: recordId,
+          ...input,
+          qqOpenId: "123456",
+          qqLevel: "1",
+          qqVip: "1",
+          createBy: id,
+          roleId: "1",
+          lastLoginTime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+        },
+        {
+          transaction,
+        }
+      );
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+    }
+    return this.fetchById(recordId);
   }
 
   /**
    * 更新用户
    */
-  updateUser(data, ctx) {
+  async updateUser(data, ctx) {
     const userId = getOperator(ctx);
     const { input = {}, id } = data;
-    return new Promise((resolve) => {
-      this.ctx.app.model.User.update(
+    let transaction;
+    let res;
+    try {
+      transaction = await ctx.model.transaction();
+      if (input.fileList) {
+        if (!input.fileList.length) {
+          await this.ctx.app.model.File.destroy({
+            where: {
+              recordId: id,
+            },
+            transaction,
+          });
+        } else {
+          if (!input.fileList[0].recordId) {
+            let v = input.fileList[0];
+            await this.ctx.app.model.File.destroy({
+              where: {
+                recordId: id,
+              },
+              transaction,
+            });
+            await this.ctx.app.model.File.create(
+              {
+                recordId: id,
+                fileName: v.fileName,
+                filePath: v.filePath,
+                fileExt: v.fileExt,
+                fileFullPath: v.filePath + "/" + v.fileName + "." + v.fileExt,
+                createBy: userId,
+              },
+              {
+                transaction,
+              }
+            );
+          }
+        }
+        delete input.fileList;
+      }
+
+      res = await this.ctx.app.model.User.update(
         Object.assign({}, input, { updateBy: userId }),
         {
           where: { id },
+          transaction,
         }
-      ).then((res) => {
-        resolve(res[0] == 1 ? this.fetchById(id) : null);
-      });
-    });
+      );
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+    }
+    return res[0] == 1 ? this.fetchById(id) : null;
   }
 
   /**

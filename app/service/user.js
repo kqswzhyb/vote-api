@@ -15,6 +15,10 @@ class UserService extends Service {
           model: this.ctx.app.model.UserInvitateCode,
         },
         {
+          as: "file",
+          model: this.ctx.app.model.File,
+        },
+        {
           as: "role",
           model: this.ctx.app.model.Role,
           attributes: ['id','name'],

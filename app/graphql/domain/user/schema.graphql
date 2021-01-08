@@ -7,9 +7,9 @@ type User implements Base{
   qqVip: String
   lastLoginTime: Date
   lastVoteTime: Date
-  avatarId: String
   role: Role
   userInvitateCode: [UserInvitateCode]!
+  file: File
   createdAt: Date
   updatedAt: Date
   status: String

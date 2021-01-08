@@ -45,7 +45,8 @@ class FileService extends Service {
             code: "0",
             message: "成功",
             data: {
-              filename,
+              recordId: "",
+              fileName: filename,
               fileExt,
               filePath: fileDic,
               fileFullPath: fileDic + "/" + filename + "." + fileExt,
