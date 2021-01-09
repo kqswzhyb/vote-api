@@ -21,4 +21,10 @@ type Mutation {
   createDic (input: CreateDicInput!): Dic
   updateDic (id: ID!, input: UpdateDicInput!): Dic
   deleteDic (id: ID!): DeleteCallback
+
+  createVote (input: CreateVoteInput!): Vote
+  updateVote (id: ID!, input: UpdateVoteInput!): Vote
+
+  createVoteConfig (input: CreateVoteConfigInput!): VoteConfig
+  updateVoteConfig (id: ID!, input: UpdateVoteConfigInput!): VoteConfig
 }

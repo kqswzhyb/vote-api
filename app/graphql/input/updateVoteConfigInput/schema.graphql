@@ -1,0 +1,13 @@
+input UpdateVoteConfigInput {
+  hasSpecialVote: String!
+  voteShowType: String!
+  voteUpdateType: String!
+  showMap: String!
+  showChart: String!
+  voteLevel: String!
+  voteQqVip: String!
+  diyBg: String
+  status: String
+  remark: String
+  updateBy: String
+}

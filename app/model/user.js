@@ -1,7 +1,7 @@
 const base = require("./common/base.js");
 
 module.exports = (app) => {
-  const { STRING, DATE, UUID } = app.Sequelize;
+  const { STRING, DATE, UUID, INTEGER } = app.Sequelize;
   return app.model.define(
     "user",
     {
@@ -11,9 +11,10 @@ module.exports = (app) => {
         comment: "QQ授权标识",
       },
       qqLevel: {
-        type: STRING(64),
+        type: INTEGER,
         allowNull: false,
         comment: "QQ等级",
+        defaultValue: 0,
       },
       qqVip: {
         type: STRING(64),

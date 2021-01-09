@@ -1,0 +1,18 @@
+type Vote implements Base {
+  id: ID!
+  voteConfigId: String!
+  voteName: String!
+  voteType: String!
+  startTime: Date!
+  endTime: Date!
+  ruleContent: String!
+  hasReward: String!
+  rewardContent: String!
+  voteConfig: VoteConfig!
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}

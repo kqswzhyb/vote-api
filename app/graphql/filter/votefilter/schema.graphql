@@ -1,0 +1,4 @@
+input VoteFilter {
+  voteName: String
+  status: String
+}

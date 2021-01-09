@@ -3,7 +3,7 @@ type User implements Base{
   username: String!
   qqOpenId: String
   nickname: String!
-  qqLevel: String
+  qqLevel: Int
   qqVip: String
   lastLoginTime: Date
   lastVoteTime: Date

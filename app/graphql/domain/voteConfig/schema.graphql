@@ -1,0 +1,18 @@
+type VoteConfig implements Base {
+  id: ID!
+  voteId: String!
+  hasSpecialVote: String!
+  voteShowType: String!
+  voteUpdateType: String!
+  showMap: String!
+  showChart: String!
+  voteLevel: String!
+  voteQqVip: String!
+  diyBg: String
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}

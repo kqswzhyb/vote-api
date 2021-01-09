@@ -1,5 +1,5 @@
 const uuid = require('uuid');
-const { UUID, STRING, DATE, ENUM } = require('Sequelize');
+const { UUID, STRING, DATE } = require('Sequelize');
 
 module.exports = {
   id: {
@@ -10,9 +10,8 @@ module.exports = {
     defaultValue: () => uuid.v4().replace(/-/g, ''),
   },
   status: {
-    type: ENUM,
+    type: STRING(1),
     allowNull: false,
-    values: ['0', '1'],
     comment: '状态',
     defaultValue: '0',
   },

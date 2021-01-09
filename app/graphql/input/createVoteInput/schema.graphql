@@ -1,0 +1,12 @@
+input CreateVoteInput {
+  voteConfigId: String!
+  voteName: String!
+  voteType: String!
+  startTime: Date!
+  endTime: Date!
+  ruleContent: String!
+  hasReward: String!
+  rewardContent: String!
+  createBy: String
+  remark: String
+}

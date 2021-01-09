@@ -28,6 +28,9 @@ exports.handleFilter = (filter) => {
 };
 
 exports.getOperator = (ctx) => {
+  if(!ctx.request.header["authorization"]) {
+    throw new Error('没有token')
+  }
   const token = ctx.request.header["authorization"].slice(7);
   let id
   try {

@@ -49,5 +49,13 @@ module.exports = (app) => {
         status: "0",
       },
     });
+    app.model.Vote.hasOne(app.model.VoteConfig, {
+      as: "voteConfig",
+      foreignKey: "voteId",
+      sourceKey: "id",
+      scope: {
+        status: "0",
+      },
+    });
   });
 };

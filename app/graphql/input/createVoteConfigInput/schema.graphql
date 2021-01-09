@@ -1,0 +1,13 @@
+input CreateVoteConfigInput {
+  voteId: String!
+  hasSpecialVote: String!
+  voteShowType: String!
+  voteUpdateType: String!
+  showMap: String!
+  showChart: String!
+  voteLevel: String!
+  voteQqVip: String!
+  diyBg: String
+  createBy: String
+  remark: String
+}

@@ -31,4 +31,11 @@ type Query {
 
   dic(id: ID!): Dic
   dicList(page: PageInput): [Dic]!
+
+  vote(id: ID!): Vote
+  voteList(page: PageInput,filter: VoteFilter): [Vote]!
+  voteCount(filter: VoteFilter): Count
+
+  voteConfig(id: ID!): VoteConfig
+  voteConfigList(page: PageInput): [VoteConfig]!
 }
