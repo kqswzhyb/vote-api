@@ -1,0 +1,6 @@
+input CreateDicTypeInput {
+  name: String!
+  code: String!
+  createBy: String
+  remark: String
+}

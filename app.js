@@ -41,5 +41,13 @@ module.exports = (app) => {
         status: "0",
       },
     });
+    app.model.DicType.hasMany(app.model.Dic, {
+      as: "dic",
+      foreignKey: "typeId",
+      sourceKey: "id",
+      scope: {
+        status: "0",
+      },
+    });
   });
 };

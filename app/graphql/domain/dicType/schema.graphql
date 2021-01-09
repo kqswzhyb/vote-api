@@ -1,0 +1,12 @@
+type DicType implements Base {
+  id: ID!
+  name: String!
+  code: String!
+  dic: [Dic]!
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}

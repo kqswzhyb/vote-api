@@ -1,7 +1,7 @@
 "use strict";
 
 const DataLoader = require("dataloader");
-const { handleFilter } = require("../../utils/util.js");
+const { handleFilter,getOperator } = require("../../utils/util.js");
 
 class RoleConnector {
   constructor(ctx) {

@@ -11,13 +11,24 @@ type Query {
   user(id: ID!): User
   userList(page: PageInput,filter: UserFilter): [User]!
   userCount(filter: UserFilter): Count
+
   userInvitateCode(id: ID!): UserInvitateCode
   userInvitateCodeList(page: PageInput): [UserInvitateCode]!
+
   role(id: ID!): Role
   roleList(page: PageInput,filter: RoleFilter): [Role]!
+
   roleMenu(id: ID!): RoleMenu
   roleMenuList(page: PageInput): [RoleMenu]!
+
   menu(id: ID!): Menu
   menuList(page: PageInput): [Menu]!
+
   file(id: ID!): File
+
+  dicType(id: ID!): DicType
+  dicTypeList(page: PageInput): [DicType]!
+
+  dic(id: ID!): Dic
+  dicList(page: PageInput): [Dic]!
 }

@@ -13,4 +13,12 @@ type Mutation {
   createMenu (input: CreateMenuInput!): Menu
   updateMenu (id: ID!, input: UpdateMenuInput!): Menu
   deleteMenu (id: ID!): DeleteCallback
+
+  createDicType (input: CreateDicTypeInput!): DicType
+  updateDicType (id: ID!, input: UpdateDicTypeInput!): DicType
+  deleteDicType (id: ID!): DeleteCallback
+
+  createDic (input: CreateDicInput!): Dic
+  updateDic (id: ID!, input: UpdateDicInput!): Dic
+  deleteDic (id: ID!): DeleteCallback
 }

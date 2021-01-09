@@ -1,0 +1,12 @@
+type Dic implements Base {
+  id: ID!
+  typeId: String!
+  name: String!
+  value: String!
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}

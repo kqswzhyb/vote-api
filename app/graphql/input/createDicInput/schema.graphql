@@ -1,0 +1,7 @@
+input CreateDicInput {
+  typeId: String!
+  name: String!
+  value: String!
+  createBy: String
+  remark: String
+}

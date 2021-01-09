@@ -1,23 +1,23 @@
 "use strict";
 
 const DataLoader = require("dataloader");
-const { handleFilter,getOperator } = require("../../utils/util.js");
+const { handleFilter, getOperator } = require("../../utils/util.js");
 const errorMap = require("../../utils/errorMap");
 
-class RoleMenuConnector {
+class DicConnector {
   constructor(ctx) {
     this.ctx = ctx;
     this.loader = new DataLoader(this.fetch.bind(this));
   }
 
   fetch(ids) {
-    const roleMenu = this.ctx.app.model.RoleMenu.findAll({
+    const dic = this.ctx.app.model.Dic.findAll({
       where: {
         id: ids,
       },
     });
     return new Promise((resolve, reject) => {
-      roleMenu.then((res) => {
+      dic.then((res) => {
         res.length ? resolve(res) : resolve([{}]);
       });
     });
@@ -29,46 +29,28 @@ class RoleMenuConnector {
    */
   fetchList(data) {
     const { page = {}, filter = {} } = data;
-    const roleMenus = this.ctx.app.model.RoleMenu.findAll({
+    return this.ctx.app.model.Dic.findAll({
       where: {
         status: "0",
         ...handleFilter(filter),
       },
-      include: [
-        {
-          as: "menu",
-          model: this.ctx.app.model.Menu,
-        },
-      ],
       order: [["updatedAt", "DESC"]],
       limit: page.limit || 10,
       offset: page.offset || 0,
     });
-    return roleMenus;
   }
 
   fetchById(id) {
-    return this.ctx.app.model.RoleMenu.findOne({
-      where: {
-        status: "0",
-        id,
-      },
-      include: [
-        {
-          as: "menu",
-          model: this.ctx.app.model.Menu,
-        },
-      ],
-    });
+    return this.loader.load(id);
   }
 
   /**
    * 创建
    */
-  createRoleMenu(data, ctx) {
+  createDic(data, ctx) {
     const id = getOperator(ctx);
     const { input = {} } = data;
-    return this.ctx.app.model.RoleMenu.create({
+    return this.ctx.app.model.Dic.create({
       ...input,
       createBy: id,
     });
@@ -77,11 +59,11 @@ class RoleMenuConnector {
   /**
    * 更新
    */
-  updateRoleMenu(data, ctx) {
+  updateDic(data, ctx) {
     const userId = getOperator(ctx);
     const { input = {}, id } = data;
     return new Promise((resolve) => {
-      this.ctx.app.model.RoleMenu.update(
+      this.ctx.app.model.Dic.update(
         Object.assign({}, input, { updateBy: userId }),
         {
           where: { id },
@@ -95,10 +77,10 @@ class RoleMenuConnector {
   /**
    * 删除
    */
-  deleteRoleMenu(data) {
+  deleteDic(data) {
     const { id } = data;
     return new Promise((resolve) => {
-      this.ctx.app.model.roleMenu.destroy({ where: { id } }).then((res) => {
+      this.ctx.app.model.Dic.destroy({ where: { id } }).then((res) => {
         resolve(
           res == 1
             ? { code: "0", message: "成功" }
@@ -109,4 +91,4 @@ class RoleMenuConnector {
   }
 }
 
-module.exports = RoleMenuConnector;
+module.exports = DicConnector;
