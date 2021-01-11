@@ -9,6 +9,7 @@ type Vote implements Base {
   hasReward: String!
   rewardContent: String!
   voteConfig: VoteConfig!
+  voteRoleType: [VoteRoleType]!
   createdAt: Date
   updatedAt: Date
   status: String

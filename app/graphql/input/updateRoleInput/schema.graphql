@@ -1,6 +1,0 @@
-input UpdateRoleInput {
-  name: String
-  status: String
-  remark: String
-  updateBy: String
-}

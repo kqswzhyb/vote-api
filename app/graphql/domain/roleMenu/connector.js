@@ -71,6 +71,7 @@ class RoleMenuConnector {
     return this.ctx.app.model.RoleMenu.create({
       ...input,
       createBy: id,
+      updateBy: id,
     });
   }
 

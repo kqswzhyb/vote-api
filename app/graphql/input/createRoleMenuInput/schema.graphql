@@ -1,6 +1,0 @@
-input CreateRoleMenuInput {
-    roleId: String!
-    menuId: String!
-    createBy: String
-    remark: String
-}

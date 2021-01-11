@@ -9,14 +9,14 @@ interface Base {
 
 type Query {
   user(id: ID!): User
-  userList(page: PageInput,filter: UserFilter): [User]!
+  userList(page: PageInput, filter: UserFilter): [User]!
   userCount(filter: UserFilter): Count
 
   userInvitateCode(id: ID!): UserInvitateCode
   userInvitateCodeList(page: PageInput): [UserInvitateCode]!
 
   role(id: ID!): Role
-  roleList(page: PageInput,filter: RoleFilter): [Role]!
+  roleList(page: PageInput, filter: RoleFilter): [Role]!
 
   roleMenu(id: ID!): RoleMenu
   roleMenuList(page: PageInput): [RoleMenu]!
@@ -27,15 +27,20 @@ type Query {
   file(id: ID!): File
 
   dicType(id: ID!): DicType
-  dicTypeList(page: PageInput): [DicType]!
+  dicTypeList(page: PageInput, filter: DicTypeFilter): [DicType]!
+  dicTypeCount(filter: DicTypeFilter): Count
 
   dic(id: ID!): Dic
-  dicList(page: PageInput): [Dic]!
+  dicList(page: PageInput, filter: DicFilter): [Dic]!
+  dicCount(filter: DicFilter): Count
 
   vote(id: ID!): Vote
-  voteList(page: PageInput,filter: VoteFilter): [Vote]!
+  voteList(page: PageInput, filter: VoteFilter): [Vote]!
   voteCount(filter: VoteFilter): Count
 
   voteConfig(id: ID!): VoteConfig
   voteConfigList(page: PageInput): [VoteConfig]!
+
+  voteRoleType(id: ID!): VoteRoleType
+  voteRoleTypeList(page: PageInput): [VoteRoleType]!
 }

@@ -1,0 +1,14 @@
+input CreateVoteRoleTypeInput {
+  voteId: String!
+  name: String!
+  createBy: String
+  remark: String
+}
+
+input UpdateVoteRoleTypeInput {
+  voteId: String!
+  name: String!
+  status: String
+  remark: String
+  updateBy: String
+}

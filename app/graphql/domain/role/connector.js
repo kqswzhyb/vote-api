@@ -82,6 +82,7 @@ class RoleConnector {
     const role = this.ctx.app.model.Role.create({
       ...input,
       createBy: id,
+      updateBy: id,
     });
     role.then(res=>{
         this.ctx.app.model.RoleMenu.create({

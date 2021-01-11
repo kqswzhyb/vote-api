@@ -1,8 +1,0 @@
-input UpdateDicInput {
-  typeId: String!
-  name: String!
-  value: String!
-  status: String
-  remark: String
-  updateBy: String
-}

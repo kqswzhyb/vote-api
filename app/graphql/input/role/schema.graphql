@@ -1,0 +1,16 @@
+input CreateRoleInput {
+    name: String!
+    createBy: String
+    remark: String
+}
+
+input UpdateRoleInput {
+  name: String
+  status: String
+  remark: String
+  updateBy: String
+}
+
+input RoleFilter {
+  name: String
+}

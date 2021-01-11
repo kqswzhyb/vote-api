@@ -1,7 +1,0 @@
-input UpdateVoteInput {
-  ruleContent: String!
-  rewardContent: String!
-  status: String
-  remark: String
-  updateBy: String
-}

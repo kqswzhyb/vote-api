@@ -10,6 +10,10 @@ module.exports = {
     dicTypeList(root, data, ctx) {
       return ctx.connector.dicType.fetchList(data);
     },
+    // 查询总数
+    dicTypeCount(root, data, ctx) {
+      return ctx.connector.dicType.fetchCount(data);
+    },
   },
   Mutation: {
     //创建

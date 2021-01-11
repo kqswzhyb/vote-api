@@ -1,0 +1,35 @@
+input CreateUserInput {
+  username: String!
+  nickname: String!
+  remark: String
+  qqOpenId: String
+  qqLevel: String
+  qqVip: String
+  roleId: String
+  createBy: String
+  fileList: [FileInput]
+}
+
+input UpdateUserInput {
+  nickname: String
+  qqOpenId: String
+  qqLevel: String
+  qqVip: String
+  fileList: [FileInput]
+  roleId: String
+  status: String
+  remark: String
+  updateBy: String
+}
+
+input UserFilter {
+  username: String
+  nickname: String
+  createdAt: String
+  qqLevel: String
+  qqVip: String
+  roleId: String
+  lastLoginTime: String
+  lastVoteTime: String
+}
+

@@ -1,0 +1,19 @@
+input CreateDicInput {
+  typeId: String!
+  name: String!
+  value: String!
+  createBy: String
+  remark: String
+}
+
+input UpdateDicInput {
+  name: String!
+  value: String!
+  status: String
+  remark: String
+  updateBy: String
+}
+
+input DicFilter {
+  typeId: String
+}

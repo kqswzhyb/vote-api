@@ -1,0 +1,11 @@
+type VoteRoleType implements Base {
+  id: ID!
+  voteId: String!
+  name: String!
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}

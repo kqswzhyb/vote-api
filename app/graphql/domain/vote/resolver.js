@@ -10,6 +10,10 @@ module.exports = {
     voteList(root, data, ctx) {
       return ctx.connector.vote.fetchList(data);
     },
+    // 查询总数
+    voteCount(root, data, ctx) {
+      return ctx.connector.vote.fetchCount(data);
+    },
   },
   Mutation: {
     //创建

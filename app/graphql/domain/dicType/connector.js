@@ -53,6 +53,22 @@ class DicTypeConnector {
     return dicTypes;
   }
 
+  /**
+   * 查询总数
+   * @returns {*}
+   */
+  async fetchCount(data) {
+    const { filter = {} } = data;
+    const count = await this.ctx.app.model.DicType.count({
+      where: {
+        ...handleFilter(filter),
+      },
+    });
+    return {
+      total: count,
+    };
+  }
+
   fetchById(id) {
     return this.loader.load(id);
   }
@@ -66,6 +82,7 @@ class DicTypeConnector {
     return this.ctx.app.model.DicType.create({
       ...input,
       createBy: id,
+      updateBy: id,
     });
   }
 
@@ -93,13 +110,16 @@ class DicTypeConnector {
   deleteDicType(data) {
     const { id } = data;
     return new Promise((resolve) => {
-      this.ctx.app.model.DicType.destroy({ where: { id } }).then((res) => {
-        resolve(
-          res == 1
-            ? { code: "0", message: "成功" }
-            : { code: "1001", message: errorMap["1001"] }
-        );
-      });
+      this.ctx.app.model.DicType.destroy({ where: { id } }).then(
+        async (res) => {
+          await this.ctx.connector.dic.deleteDicByTypeId(data);
+          resolve(
+            res == 1
+              ? { code: "0", message: "成功" }
+              : { code: "1001", message: errorMap["1001"] }
+          );
+        }
+      );
     });
   }
 }

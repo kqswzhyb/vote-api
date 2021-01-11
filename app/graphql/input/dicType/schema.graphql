@@ -1,0 +1,17 @@
+input CreateDicTypeInput {
+  name: String!
+  code: String!
+  createBy: String
+  remark: String
+}
+input UpdateDicTypeInput {
+  name: String!
+  code: String!
+  status: String
+  remark: String
+  updateBy: String
+}
+input DicTypeFilter {
+  name: String
+  code: String
+}

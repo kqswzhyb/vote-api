@@ -53,6 +53,7 @@ class VoteConfigConnector {
     return this.ctx.app.model.VoteConfig.create({
       ...input,
       createBy: id,
+      updateBy: id,
     });
   }
 

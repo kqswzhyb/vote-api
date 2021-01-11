@@ -1,0 +1,27 @@
+input CreateVoteInput {
+  voteConfigId: String!
+  voteName: String!
+  voteType: String!
+  startTime: Date!
+  endTime: Date!
+  ruleContent: String!
+  hasReward: String!
+  rewardContent: String!
+  createBy: String
+  configInput: CreateVoteConfigInput
+  remark: String
+}
+
+input UpdateVoteInput {
+  ruleContent: String!
+  rewardContent: String!
+  configInput: UpdateVoteConfigInput
+  status: String
+  remark: String
+  updateBy: String
+}
+
+input VoteFilter {
+  voteName: String
+  status: String
+}

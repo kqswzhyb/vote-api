@@ -1,23 +1,23 @@
 "use strict";
 
 const DataLoader = require("dataloader");
-const { handleFilter, getOperator } = require("../../utils/util.js");
+const { handleFilter,getOperator } = require("../../utils/util.js");
 const errorMap = require("../../utils/errorMap");
 
-class DicConnector {
+class VoteRoleTypeConnector {
   constructor(ctx) {
     this.ctx = ctx;
     this.loader = new DataLoader(this.fetch.bind(this));
   }
 
   fetch(ids) {
-    const dic = this.ctx.app.model.Dic.findAll({
+    const voteRoleType = this.ctx.app.model.VoteRoleType.findAll({
       where: {
         id: ids,
       },
     });
     return new Promise((resolve, reject) => {
-      dic.then((res) => {
+      voteRoleType.then((res) => {
         res.length ? resolve(res) : resolve([{}]);
       });
     });
@@ -29,7 +29,7 @@ class DicConnector {
    */
   fetchList(data) {
     const { page = {}, filter = {} } = data;
-    return this.ctx.app.model.Dic.findAll({
+    const voteRoleTypes = this.ctx.app.model.VoteRoleType.findAll({
       where: {
         status: "0",
         ...handleFilter(filter),
@@ -38,22 +38,7 @@ class DicConnector {
       limit: page.limit || 10,
       offset: page.offset || 0,
     });
-  }
-
-  /**
-   * 查询总数
-   * @returns {*}
-   */
-  async fetchCount(data) {
-    const { filter = {} } = data;
-    const count = await this.ctx.app.model.Dic.count({
-      where: {
-        ...handleFilter(filter),
-      },
-    });
-    return {
-      total: count,
-    };
+    return voteRoleTypes;
   }
 
   fetchById(id) {
@@ -63,10 +48,10 @@ class DicConnector {
   /**
    * 创建
    */
-  createDic(data, ctx) {
+  createVoteRoleType(data, ctx) {
     const id = getOperator(ctx);
     const { input = {} } = data;
-    return this.ctx.app.model.Dic.create({
+    return this.ctx.app.model.VoteRoleType.create({
       ...input,
       createBy: id,
       updateBy: id,
@@ -76,11 +61,11 @@ class DicConnector {
   /**
    * 更新
    */
-  updateDic(data, ctx) {
+  updateVoteRoleType(data, ctx) {
     const userId = getOperator(ctx);
     const { input = {}, id } = data;
     return new Promise((resolve) => {
-      this.ctx.app.model.Dic.update(
+      this.ctx.app.model.VoteRoleType.update(
         Object.assign({}, input, { updateBy: userId }),
         {
           where: { id },
@@ -94,26 +79,10 @@ class DicConnector {
   /**
    * 删除
    */
-  deleteDic(data) {
+  deleteVoteRoleType(data) {
     const { id } = data;
     return new Promise((resolve) => {
-      this.ctx.app.model.Dic.destroy({ where: { id } }).then((res) => {
-        resolve(
-          res == 1
-            ? { code: "0", message: "成功" }
-            : { code: "1001", message: errorMap["1001"] }
-        );
-      });
-    });
-  }
-
-  /**
-   * 通过typeId删除
-   */
-  deleteDicByTypeId(data) {
-    const { id } = data;
-    return new Promise((resolve) => {
-      this.ctx.app.model.Dic.destroy({ where: { typeId: id } }).then((res) => {
+      this.ctx.app.model.VoteRoleType.destroy({ where: { id } }).then((res) => {
         resolve(
           res == 1
             ? { code: "0", message: "成功" }
@@ -124,4 +93,4 @@ class DicConnector {
   }
 }
 
-module.exports = DicConnector;
+module.exports = VoteRoleTypeConnector;

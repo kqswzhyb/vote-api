@@ -1,7 +1,0 @@
-input UpdateDicTypeInput {
-  name: String!
-  code: String!
-  status: String
-  remark: String
-  updateBy: String
-}

@@ -56,6 +56,7 @@ class MenuConnector {
     return this.ctx.app.model.Menu.create({
       ...input,
       createBy: id,
+      updateBy: id,
     });
   }
 

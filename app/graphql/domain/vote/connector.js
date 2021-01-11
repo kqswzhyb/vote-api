@@ -80,6 +80,7 @@ class VoteConnector {
     return this.ctx.app.model.Vote.create({
       ...input,
       createBy: id,
+      updateBy: id,
     });
   }
 

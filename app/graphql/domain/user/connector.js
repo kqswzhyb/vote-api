@@ -130,6 +130,7 @@ class UserConnector {
               fileExt: v.fileExt,
               fileFullPath: v.filePath + "/" + v.fileName + "." + v.fileExt,
               createBy: id,
+              updateBy: id,
             },
             {
               transaction,
@@ -147,6 +148,7 @@ class UserConnector {
           qqLevel: "1",
           qqVip: "1",
           createBy: id,
+          updateBy: id,
           roleId: "1",
           lastLoginTime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
         },
@@ -196,6 +198,7 @@ class UserConnector {
                 fileExt: v.fileExt,
                 fileFullPath: v.filePath + "/" + v.fileName + "." + v.fileExt,
                 createBy: userId,
+                updateBy: userId,
               },
               {
                 transaction,
