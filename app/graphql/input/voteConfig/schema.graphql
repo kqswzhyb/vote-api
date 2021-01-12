@@ -1,25 +1,27 @@
 input CreateVoteConfigInput {
-  voteId: String!
+  voteId: String
   hasSpecialVote: String!
   voteShowType: String!
   voteUpdateType: String!
   showMap: String!
   showChart: String!
-  voteLevel: String!
+  voteLevel: Int!
   voteQqVip: String!
   diyBg: String
+  file: FileInput
   createBy: String
   remark: String
 }
 
 input UpdateVoteConfigInput {
-  hasSpecialVote: String!
+  voteConfigId: String!
   voteShowType: String!
   voteUpdateType: String!
   showMap: String!
   showChart: String!
-  voteLevel: String!
+  voteLevel: Int!
   voteQqVip: String!
+  file: FileInput
   diyBg: String
   status: String
   remark: String

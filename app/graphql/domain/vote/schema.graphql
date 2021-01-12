@@ -1,6 +1,5 @@
 type Vote implements Base {
   id: ID!
-  voteConfigId: String!
   voteName: String!
   voteType: String!
   startTime: Date!

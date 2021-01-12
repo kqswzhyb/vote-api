@@ -1,12 +1,12 @@
 input CreateVoteRoleTypeInput {
-  voteId: String!
+  voteId: String
   name: String!
   createBy: String
   remark: String
 }
 
 input UpdateVoteRoleTypeInput {
-  voteId: String!
+  voteId: String
   name: String!
   status: String
   remark: String

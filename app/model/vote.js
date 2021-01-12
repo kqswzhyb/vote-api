@@ -6,11 +6,6 @@ module.exports = (app) => {
   return app.model.define(
     "vote",
     {
-      voteConfigId: {
-        type: UUID,
-        allowNull: false,
-        comment: "比赛配置id",
-      },
       voteName: {
         type: STRING(30),
         allowNull: false,

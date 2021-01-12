@@ -1,7 +1,7 @@
 "use strict";
 
 const DataLoader = require("dataloader");
-const { handleFilter,getOperator } = require("../../utils/util.js");
+const { handleFilter, getOperator } = require("../../utils/util.js");
 const errorMap = require("../../utils/errorMap");
 
 class VoteRoleTypeConnector {
@@ -50,11 +50,35 @@ class VoteRoleTypeConnector {
    */
   createVoteRoleType(data, ctx) {
     const id = getOperator(ctx);
-    const { input = {} } = data;
-    return this.ctx.app.model.VoteRoleType.create({
-      ...input,
-      createBy: id,
-      updateBy: id,
+    const { input = {}, transaction = null } = data;
+    return this.ctx.app.model.VoteRoleType.create(
+      {
+        ...input,
+        createBy: id,
+        updateBy: id,
+      },
+      { transaction }
+    );
+  }
+
+  /**
+   * 创建
+   */
+  batchCreateVoteRoleType(data, ctx) {
+    const { arr = [], transaction = null } = data;
+    return this.ctx.app.model.VoteRoleType.bulkCreate(arr, { transaction });
+  }
+
+  /**
+   * 删除
+   */
+  deleteVoteRoleTypeByVote(data, ctx) {
+    const { id, transaction = null } = data;
+    return this.ctx.app.model.VoteRoleType.destroy({
+      where: {
+        voteId: id,
+      },
+      transaction,
     });
   }
 
