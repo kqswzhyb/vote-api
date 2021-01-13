@@ -1,0 +1,30 @@
+input CreateVoteRoleInput {
+  voteId: String
+  roleTypeId: String!
+  roleName: String!
+  alias: String
+  description: String
+  file: FileInput
+  createBy: String
+  remark: String
+}
+
+input UpdateVoteRoleInput {
+  voteRoleId: String!
+  roleTypeId: String!
+  roleName: String!
+  alias: String
+  description: String
+  file: FileInput
+  status: String
+  remark: String
+  updateBy: String
+}
+
+input VoteRoleFilter {
+  voteId: String
+  roleTypeId: String
+  roleName: String
+  alias: String
+  description: String
+}

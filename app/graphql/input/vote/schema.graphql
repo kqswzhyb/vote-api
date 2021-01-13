@@ -1,6 +1,7 @@
 input CreateVoteInput {
   voteName: String!
   voteType: String!
+  specialType: String
   startTime: Date!
   endTime: Date!
   ruleContent: String!
@@ -14,8 +15,23 @@ input CreateVoteInput {
 }
 
 input UpdateVoteInput {
-  ruleContent: String!
-  rewardContent: String!
+  ruleContent: String
+  rewardContent: String
+  configInput: UpdateVoteConfigInput
+  roleInput: [CreateVoteRoleTypeInput]
+  status: String
+  remark: String
+  updateBy: String
+}
+
+input DraftUpdateVoteInput {
+  voteName: String!
+  voteType: String!
+  specialType: String
+  startTime: Date!
+  endTime: Date!
+  ruleContent: String
+  rewardContent: String
   configInput: UpdateVoteConfigInput
   roleInput: [CreateVoteRoleTypeInput]!
   status: String

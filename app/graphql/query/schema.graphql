@@ -43,4 +43,8 @@ type Query {
 
   voteRoleType(id: ID!): VoteRoleType
   voteRoleTypeList(page: PageInput): [VoteRoleType]!
+
+  voteRole(id: ID!): VoteRole
+  voteRoleList(page: PageInput, filter: VoteRoleFilter): [VoteRole]!
+  voteRoleCount(filter: VoteRoleFilter): Count
 }

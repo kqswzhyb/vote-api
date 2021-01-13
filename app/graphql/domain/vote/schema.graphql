@@ -2,6 +2,7 @@ type Vote implements Base {
   id: ID!
   voteName: String!
   voteType: String!
+  specialType: String
   startTime: Date!
   endTime: Date!
   ruleContent: String!
@@ -9,6 +10,7 @@ type Vote implements Base {
   rewardContent: String!
   voteConfig: VoteConfig!
   voteRoleType: [VoteRoleType]!
+  voteRole: [VoteRole]!
   createdAt: Date
   updatedAt: Date
   status: String

@@ -73,5 +73,21 @@ module.exports = (app) => {
         status: "0",
       },
     });
+    app.model.VoteRole.hasOne(app.model.File, {
+      as: "file",
+      foreignKey: "recordId",
+      sourceKey: "id",
+      scope: {
+        status: "0",
+      },
+    });
+    app.model.Vote.hasMany(app.model.VoteRole, {
+      as: "voteRole",
+      foreignKey: "voteId",
+      sourceKey: "id",
+      scope: {
+        status: "0",
+      },
+    });
   });
 };

@@ -16,6 +16,11 @@ module.exports = (app) => {
         allowNull: false,
         comment: "比赛类型",
       },
+      specialType: {
+        type: STRING(30),
+        allowNull: false,
+        comment: "评选类型",
+      },
       ruleContent: {
         type: STRING(500),
         allowNull: false,

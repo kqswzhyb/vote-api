@@ -28,6 +28,16 @@ class VoteConnector {
           ],
         },
         {
+          as: "voteRole",
+          model: this.ctx.app.model.VoteRole,
+          include: [
+            {
+              as: "file",
+              model: this.ctx.app.model.File,
+            },
+          ],
+        },
+        {
           as: "voteRoleType",
           model: this.ctx.app.model.VoteRoleType,
         },
@@ -54,6 +64,16 @@ class VoteConnector {
         {
           as: "voteConfig",
           model: this.ctx.app.model.VoteConfig,
+          include: [
+            {
+              as: "file",
+              model: this.ctx.app.model.File,
+            },
+          ],
+        },
+        {
+          as: "voteRole",
+          model: this.ctx.app.model.VoteRole,
           include: [
             {
               as: "file",
