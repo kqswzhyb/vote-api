@@ -11,6 +11,7 @@ type Vote implements Base {
   voteConfig: VoteConfig!
   voteRoleType: [VoteRoleType]!
   voteRole: [VoteRole]!
+  roundStage: [RoundStage]!
   createdAt: Date
   updatedAt: Date
   status: String

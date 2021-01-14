@@ -1,0 +1,16 @@
+type Round implements Base {
+  id: ID!
+  roundStageId: String!
+  parentId:String!
+  roundName: String
+  groupName: String
+  startTime: Date!
+  endTime: Date!
+  roundRole: [RoundRole]!
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}

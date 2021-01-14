@@ -11,10 +11,10 @@ class VoteConnector {
     this.loader = new DataLoader(this.fetch.bind(this));
   }
 
-  fetch(ids) {
+  fetch(id) {
     const vote = this.ctx.app.model.Vote.findAll({
       where: {
-        id: ids,
+        id,
       },
       include: [
         {
@@ -40,6 +40,28 @@ class VoteConnector {
         {
           as: "voteRoleType",
           model: this.ctx.app.model.VoteRoleType,
+        },
+        {
+          as: "roundStage",
+          model: this.ctx.app.model.RoundStage,
+          include: [
+            {
+              as: "round",
+              model: this.ctx.app.model.Round,
+              include: [
+                {
+                  as: "roundRole",
+                  model: this.ctx.app.model.RoundRole,
+                  include: [
+                    {
+                      as: "voteRole",
+                      model: this.ctx.app.model.VoteRole,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
       ],
     });
@@ -198,6 +220,123 @@ class VoteConnector {
       await transaction.rollback();
     }
     return res[0] == 1 ? this.fetchById(id) : null;
+  }
+
+  /**
+   * 更新到就绪状态
+   */
+  async readyVote(data, ctx) {
+    const userId = getOperator(ctx);
+    const { id } = data;
+    const vote = await ctx.connector.vote.fetchById(id);
+    const voteJSON = vote.toJSON();
+    if (voteJSON.status === "8") {
+      return {
+        code: "1033",
+        message: "状态已过期，无法就绪",
+      };
+    }
+    let obj = {};
+    voteJSON.voteRoleType.forEach((v) => {
+      obj[v.id] = 0;
+    });
+    voteJSON.voteRole.forEach((v) => {
+      obj[v.roleTypeId] += 1;
+    });
+    if (voteJSON.voteType === "0") {
+      return testResult(
+        Object.values(obj).every((v) => v >= 2),
+        ctx,
+        id,
+        userId,
+        voteJSON
+      );
+    }
+
+    if (voteJSON.voteType === "1") {
+      if (voteJSON.specialType === "128") {
+        return testResult(
+          Object.values(obj).every((v) => v === 128),
+          ctx,
+          id,
+          userId,
+          voteJSON
+        );
+      }
+      if (voteJSON.specialType === "64") {
+        return testResult(
+          Object.values(obj).every((v) => v === 64),
+          ctx,
+          id,
+          userId,
+          voteJSON
+        );
+      }
+    }
+  }
+}
+
+async function testResult(res, ctx, id, userId, data) {
+  if (res) {
+    let transaction;
+    try {
+      transaction = await ctx.model.transaction();
+      if (data.voteType === "0") {
+        const roundStageId = UUID.v4().replace(/-/g, "");
+        const roundId = UUID.v4().replace(/-/g, "");
+        await ctx.connector.roundStage.createRoundStage({ input: {
+          id:roundStageId,
+          parentId: "-1",
+          voteId: data.id,
+          roleTypeId: data.voteRoleType[0].id,
+          name: "正赛",
+          startTime: data.startTime,
+          endTime: data.endTime,
+          totalCount: data.voteRole.length,
+          promotionCount: 1,
+        }, transaction }, ctx)
+        await ctx.connector.round.createRound({ input: {
+          id:roundId,
+          roundStageId,
+          parentId: "-1",
+          roundName: "正赛A组",
+          groupName:'A组',
+          startTime: data.startTime,
+          endTime: data.endTime,
+        }, transaction }, ctx)
+        await ctx.connector.roundRole.batchCreateRole({ arr: data.voteRole.map(v=>({
+          id:UUID.v4().replace(/-/g, ""),
+          roundId,
+          roleId:v.id,
+          isPromotion: "0",
+          normalCount: 0,
+          specialCount: 0,
+          totalCount: 0,
+        })), transaction }, ctx)
+      }
+      await ctx.app.model.Vote.update(
+        { updateBy: userId, status: "7" },
+        {
+          where: { id },
+        }
+      );
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+      return {
+        code: "500",
+        message: err,
+      };
+    }
+    return {
+      code: "0",
+      message: "成功",
+    };
+  } else {
+    return {
+      code: "1032",
+      message: "角色不足，无法就绪",
+    };
   }
 }
 

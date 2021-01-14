@@ -1,0 +1,16 @@
+type RoundRole implements Base {
+  id: ID!
+  roundId: String!
+  roleId: String!
+  isPromotion: String!
+  normalCount: Int
+  specialCount: Int
+  totalCount: Int
+  voteRole: VoteRole
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}

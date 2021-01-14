@@ -4,20 +4,32 @@ const DataLoader = require("dataloader");
 const { handleFilter, getOperator } = require("../../utils/util.js");
 const errorMap = require("../../utils/errorMap");
 
-class VoteRoleTypeConnector {
+class RoundRoleConnector {
   constructor(ctx) {
     this.ctx = ctx;
     this.loader = new DataLoader(this.fetch.bind(this));
   }
 
   fetch(ids) {
-    const voteRoleType = this.ctx.app.model.VoteRoleType.findAll({
+    const roundRole = this.ctx.app.model.RoundRole.findAll({
       where: {
         id: ids,
       },
+      include: [
+        {
+          as: "voteRole",
+          model: this.ctx.app.model.voteRole,
+          include: [
+            {
+              as: "voteRole",
+              model: this.ctx.app.model.VoteRole,
+            },
+          ],
+        },
+      ],
     });
     return new Promise((resolve, reject) => {
-      voteRoleType.then((res) => {
+      roundRole.then((res) => {
         res.length ? resolve(res) : resolve([{}]);
       });
     });
@@ -29,16 +41,28 @@ class VoteRoleTypeConnector {
    */
   fetchList(data) {
     const { page = {}, filter = {} } = data;
-    const voteRoleTypes = this.ctx.app.model.VoteRoleType.findAll({
+    const roundRoles = this.ctx.app.model.RoundRole.findAll({
       where: {
         status: "0",
         ...handleFilter(filter),
       },
+      include: [
+        {
+          as: "voteRole",
+          model: this.ctx.app.model.voteRole,
+          include: [
+            {
+              as: "voteRole",
+              model: this.ctx.app.model.VoteRole,
+            },
+          ],
+        },
+      ],
       order: [["updatedAt", "DESC"]],
       limit: page.limit || 10,
       offset: page.offset || 0,
     });
-    return voteRoleTypes;
+    return roundRoles;
   }
 
   fetchById(id) {
@@ -48,10 +72,10 @@ class VoteRoleTypeConnector {
   /**
    * 创建
    */
-  createVoteRoleType(data, ctx) {
+  createRoundRole(data, ctx) {
     const id = getOperator(ctx);
     const { input = {}, transaction = null } = data;
-    return this.ctx.app.model.VoteRoleType.create(
+    return this.ctx.app.model.RoundRole.create(
       {
         ...input,
         createBy: id,
@@ -64,32 +88,19 @@ class VoteRoleTypeConnector {
   /**
    * 批量创建
    */
-  batchCreateVoteRoleType(data, ctx) {
+  batchCreateRole(data, ctx) {
     const { arr = [], transaction = null } = data;
-    return this.ctx.app.model.VoteRoleType.bulkCreate(arr, { transaction });
-  }
-
-  /**
-   * 删除
-   */
-  deleteVoteRoleTypeByVote(data, ctx) {
-    const { id, transaction = null } = data;
-    return this.ctx.app.model.VoteRoleType.destroy({
-      where: {
-        voteId: id,
-      },
-      transaction,
-    });
+    return this.ctx.app.model.RoundRole.bulkCreate(arr, { transaction });
   }
 
   /**
    * 更新
    */
-  updateVoteRoleType(data, ctx) {
+  updateRoundRole(data, ctx) {
     const userId = getOperator(ctx);
     const { input = {}, id } = data;
     return new Promise((resolve) => {
-      this.ctx.app.model.VoteRoleType.update(
+      this.ctx.app.model.RoundRole.update(
         Object.assign({}, input, { updateBy: userId }),
         {
           where: { id },
@@ -103,10 +114,10 @@ class VoteRoleTypeConnector {
   /**
    * 删除
    */
-  deleteVoteRoleType(data) {
+  deleteRoundRole(data) {
     const { id } = data;
     return new Promise((resolve) => {
-      this.ctx.app.model.VoteRoleType.destroy({ where: { id } }).then((res) => {
+      this.ctx.app.model.RoundRole.destroy({ where: { id } }).then((res) => {
         resolve(
           res == 1
             ? { code: "0", message: "成功" }
@@ -117,4 +128,4 @@ class VoteRoleTypeConnector {
   }
 }
 
-module.exports = VoteRoleTypeConnector;
+module.exports = RoundRoleConnector;

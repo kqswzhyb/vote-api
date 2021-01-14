@@ -89,5 +89,37 @@ module.exports = (app) => {
         status: "0",
       },
     });
+    app.model.Vote.hasMany(app.model.RoundStage, {
+      as: "roundStage",
+      foreignKey: "voteId",
+      sourceKey: "id",
+      scope: {
+        status: "0",
+      },
+    });
+    app.model.RoundStage.hasMany(app.model.Round, {
+      as: "round",
+      foreignKey: "roundStageId",
+      sourceKey: "id",
+      scope: {
+        status: "0",
+      },
+    });
+    app.model.Round.hasMany(app.model.RoundRole, {
+      as: "roundRole",
+      foreignKey: "roundId",
+      sourceKey: "id",
+      scope: {
+        status: "0",
+      },
+    });
+    app.model.RoundRole.hasOne(app.model.VoteRole, {
+      as: "voteRole",
+      foreignKey: "id",
+      sourceKey: "roleId",
+      scope: {
+        status: "0",
+      },
+    });
   });
 };

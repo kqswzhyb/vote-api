@@ -161,6 +161,29 @@ class VoteRoleConnector {
       });
     });
   }
+
+  /**
+   * 删除
+   */
+  deleteVoteRole(data) {
+    const { id } = data;
+    return new Promise((resolve) => {
+      this.ctx.app.model.VoteRole.destroy({ where: { id } }).then(
+        async (res) => {
+          await this.ctx.app.model.File.destroy({
+            where: {
+              recordId: id,
+            },
+          });
+          resolve(
+            res == 1
+              ? { code: "0", message: "成功" }
+              : { code: "1001", message: errorMap["1001"] }
+          );
+        }
+      );
+    });
+  }
 }
 
 module.exports = VoteRoleConnector;

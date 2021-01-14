@@ -24,5 +24,9 @@ module.exports = {
     updateVoteRole(root, data, ctx) {
       return ctx.connector.voteRole.updateVoteRole(data, ctx);
     },
+    //删除
+    deleteVoteRole(root, data, ctx) {
+        return ctx.connector.voteRole.deleteVoteRole(data);
+      },
   },
 };

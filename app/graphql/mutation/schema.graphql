@@ -25,6 +25,7 @@ type Mutation {
   createVote (input: CreateVoteInput!): Vote
   updateVote (id: ID!, input: UpdateVoteInput!): Vote
   draftUpdateVote (id: ID!, input: DraftUpdateVoteInput!): Vote
+  readyVote (id: ID!): ResultMessage
 
   createVoteConfig (input: CreateVoteConfigInput!): VoteConfig
   updateVoteConfig (id: ID!, input: UpdateVoteConfigInput!): VoteConfig
@@ -35,4 +36,5 @@ type Mutation {
 
   createVoteRole (input: CreateVoteRoleInput!): VoteRole
   updateVoteRole (id: ID!, input: UpdateVoteRoleInput!): VoteRole
+  deleteVoteRole (id: ID!): DeleteCallback
 }

@@ -28,5 +28,9 @@ module.exports = {
     draftUpdateVote(root, data, ctx) {
       return ctx.connector.vote.updateVote(data, ctx);
     },
+    //更新就绪
+    readyVote(root, data, ctx) {
+      return ctx.connector.vote.readyVote(data, ctx);
+    },
   },
 };
