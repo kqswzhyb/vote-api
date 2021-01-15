@@ -41,5 +41,6 @@ input DraftUpdateVoteInput {
 
 input VoteFilter {
   voteName: String
+  voteType: String
   status: String
 }
