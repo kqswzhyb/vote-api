@@ -10,7 +10,7 @@ module.exports = {
     let now = new Date().getTime();
     const res = await ctx.app.model.Vote.findAll({
       where: {
-        status: "7",
+        status: "4",
       },
     });
 

@@ -6,7 +6,7 @@ const Controller = require("egg").Controller;
  * @controller File
  */
 class FileController extends Controller {
-  /** 
+  /**
    * @summary 单文件上传
    * @description 单文件上传
    * @router POST /api/file/simpleUpload
@@ -19,6 +19,9 @@ class FileController extends Controller {
     const stream = await ctx.getFileStream();
     const body = await ctx.service.file.simpleUpload(stream);
     ctx.body = body;
+    if(body.code === '2001'){
+      ctx.status = 401;
+    }
   }
 }
 module.exports = FileController;

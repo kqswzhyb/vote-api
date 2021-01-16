@@ -315,7 +315,7 @@ async function testResult(res, ctx, id, userId, data) {
         })), transaction }, ctx)
       }
       await ctx.app.model.Vote.update(
-        { updateBy: userId, status: "7" },
+        { updateBy: userId, status: "4" },
         {
           where: { id },
         }
