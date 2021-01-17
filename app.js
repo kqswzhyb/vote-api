@@ -121,5 +121,13 @@ module.exports = (app) => {
         status: "0",
       },
     });
+    app.model.VoteRecord.hasOne(app.model.VoteRole, {
+      as: "voteRole",
+      foreignKey: "id",
+      sourceKey: "voteRoleId",
+      scope: {
+        status: "0",
+      },
+    });
   });
 };

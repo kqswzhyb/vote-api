@@ -47,4 +47,8 @@ type Query {
   voteRole(id: ID!): VoteRole
   voteRoleList(page: PageInput, filter: VoteRoleFilter): [VoteRole]!
   voteRoleCount(filter: VoteRoleFilter): Count
+
+  voteRecord(id: ID!): VoteRecord
+  voteRecordList(page: PageInput, filter: VoteRecordFilter): [VoteRecord]!
+  voteRecordCount(filter: VoteRecordFilter): Count
 }

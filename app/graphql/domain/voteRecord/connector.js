@@ -4,14 +4,14 @@ const DataLoader = require("dataloader");
 const { handleFilter, getOperator } = require("../../utils/util.js");
 const errorMap = require("../../utils/errorMap");
 
-class RoundRoleConnector {
+class VoteRecordConnector {
   constructor(ctx) {
     this.ctx = ctx;
     this.loader = new DataLoader(this.fetch.bind(this));
   }
 
   fetch(ids) {
-    const roundRole = this.ctx.app.model.RoundRole.findAll({
+    const voteRecord = this.ctx.app.model.VoteRecord.findAll({
       where: {
         id: ids,
       },
@@ -29,7 +29,7 @@ class RoundRoleConnector {
       ],
     });
     return new Promise((resolve, reject) => {
-      roundRole.then((res) => {
+      voteRecord.then((res) => {
         res.length ? resolve(res) : resolve([{}]);
       });
     });
@@ -41,7 +41,7 @@ class RoundRoleConnector {
    */
   fetchList(data) {
     const { page = {}, filter = {} } = data;
-    const roundRoles = this.ctx.app.model.RoundRole.findAll({
+    return this.ctx.app.model.VoteRecord.findAll({
       where: {
         status: "0",
         ...handleFilter(filter),
@@ -62,7 +62,6 @@ class RoundRoleConnector {
       limit: page.limit || 10,
       offset: page.offset || 0,
     });
-    return roundRoles;
   }
 
   fetchById(id) {
@@ -70,40 +69,48 @@ class RoundRoleConnector {
   }
 
   /**
+   * 查询总数
+   * @returns {*}
+   */
+  async fetchCount(data) {
+    const { filter = {} } = data;
+    const count = await this.ctx.app.model.VoteRecord.count({
+      where: {
+        status: "0",
+        ...handleFilter(filter),
+      },
+    });
+    return {
+      total: count,
+    };
+  }
+
+  /**
    * 创建
    */
-  createRoundRole(data, ctx) {
+  async createVoteRecord(data, ctx) {
     const id = getOperator(ctx);
-    const { input = {}, transaction = null } = data;
-    return this.ctx.app.model.RoundRole.create(
+    const { input = {} } = data;
+    return this.ctx.app.model.VoteRecord.create(
       {
         ...input,
         createBy: id,
         updateBy: id,
-      },
-      { transaction }
+      }
     );
-  }
-
-  /**
-   * 批量创建
-   */
-  batchCreateRole(data, ctx) {
-    const { arr = [], transaction = null } = data;
-    return this.ctx.app.model.RoundRole.bulkCreate(arr, { transaction });
   }
 
   /**
    * 更新
    */
-  updateRoundRole(data, ctx) {
+  async updateVoteRecord(data, ctx) {
     const userId = getOperator(ctx);
     const { input = {}, id } = data;
     return new Promise((resolve) => {
-      this.ctx.app.model.RoundRole.update(
+      this.ctx.app.model.VoteRecord.update(
         Object.assign({}, input, { updateBy: userId }),
         {
-          where: { id },
+          where: { id }
         }
       ).then((res) => {
         resolve(res[0] == 1 ? this.fetchById(id) : null);
@@ -114,18 +121,20 @@ class RoundRoleConnector {
   /**
    * 删除
    */
-  deleteRoundRole(data) {
+  deleteVoteRecord(data) {
     const { id } = data;
     return new Promise((resolve) => {
-      this.ctx.app.model.RoundRole.destroy({ where: { id } }).then((res) => {
-        resolve(
-          res == 1
-            ? { code: "0", message: "成功" }
-            : { code: "1001", message: errorMap["1001"] }
-        );
-      });
+      this.ctx.app.model.VoteRecord.destroy({ where: { id } }).then(
+        async (res) => {
+          resolve(
+            res == 1
+              ? { code: "0", message: "成功" }
+              : { code: "1001", message: errorMap["1001"] }
+          );
+        }
+      );
     });
   }
 }
 
-module.exports = RoundRoleConnector;
+module.exports = VoteRecordConnector;

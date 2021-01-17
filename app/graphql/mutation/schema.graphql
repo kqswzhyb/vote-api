@@ -37,4 +37,8 @@ type Mutation {
   createVoteRole (input: CreateVoteRoleInput!): VoteRole
   updateVoteRole (id: ID!, input: UpdateVoteRoleInput!): VoteRole
   deleteVoteRole (id: ID!): DeleteCallback
+
+  createVoteRecord (input: CreateVoteRecordInput!): VoteRecord
+  updateVoteRecord (id: ID!, input: UpdateVoteRecordInput!): VoteRecord
+  deleteVoteRecord (id: ID!): DeleteCallback
 }

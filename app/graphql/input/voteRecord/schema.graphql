@@ -1,0 +1,30 @@
+input CreateVoteRecordInput {
+  userId: String!
+  roundId: String!
+  voteRoleId: String!
+  voteType: String!
+  isExtra: String!
+  ip: String
+  createBy: String
+  remark: String
+}
+
+input UpdateVoteRecordInput {
+  userId: String
+  roundId: String
+  voteRoleId: String
+  voteType: String
+  isExtra: String
+  ip: String
+  status: String
+  remark: String
+  updateBy: String
+}
+
+input VoteRecordFilter {
+  userId: String
+  roundId: String
+  voteRoleId: String
+  voteType: String
+  ip: String
+}
