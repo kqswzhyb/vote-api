@@ -39,6 +39,7 @@ type Mutation {
   deleteVoteRole (id: ID!): DeleteCallback
 
   createVoteRecord (input: CreateVoteRecordInput!): VoteRecord
+  batchCreateVoteRecord (input: [CreateVoteRecordInput]!): ResultMessage
   updateVoteRecord (id: ID!, input: UpdateVoteRecordInput!): VoteRecord
   deleteVoteRecord (id: ID!): DeleteCallback
 }

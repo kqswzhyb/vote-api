@@ -2,11 +2,11 @@ type VoteRecord implements Base {
   id: ID!
   userId: String!
   roundId: String!
-  voteRoleId: String!
+  roundRoleId: String!
   voteType: String!
   isExtra: String!
   ip:String
-  voteRole: VoteRole
+  roundRole: RoundRole
   createdAt: Date
   updatedAt: Date
   status: String

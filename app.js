@@ -121,10 +121,10 @@ module.exports = (app) => {
         status: "0",
       },
     });
-    app.model.VoteRecord.hasOne(app.model.VoteRole, {
-      as: "voteRole",
+    app.model.VoteRecord.hasOne(app.model.RoundRole, {
+      as: "roundRole",
       foreignKey: "id",
-      sourceKey: "voteRoleId",
+      sourceKey: "roundRoleId",
       scope: {
         status: "0",
       },

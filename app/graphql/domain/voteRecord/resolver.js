@@ -20,6 +20,10 @@ module.exports = {
     createVoteRecord(root, data, ctx) {
       return ctx.connector.voteRecord.createVoteRecord(data, ctx);
     },
+    //批量创建
+    batchCreateVoteRecord(root, data, ctx) {
+      return ctx.connector.voteRecord.batchCreateVoteRecord(data, ctx);
+    },
     //更新
     updateVoteRecord(root, data, ctx) {
       return ctx.connector.voteRecord.updateVoteRecord(data, ctx);

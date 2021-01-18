@@ -16,10 +16,10 @@ module.exports = (app) => {
         allowNull: false,
         comment: "场次id",
       },
-      voteRoleId: {
+      roundRoleId: {
         type: UUID,
         allowNull: false,
-        comment: "角色id",
+        comment: "场次角色id",
       },
       voteType: {
         type: STRING(30),

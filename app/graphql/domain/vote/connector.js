@@ -12,6 +12,7 @@ class VoteConnector {
   }
 
   fetch(id) {
+    console.log(this.ctx,this.ctx.ip)
     const vote = this.ctx.app.model.Vote.findAll({
       where: {
         id,

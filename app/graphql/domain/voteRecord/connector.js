@@ -3,6 +3,7 @@
 const DataLoader = require("dataloader");
 const { handleFilter, getOperator } = require("../../utils/util.js");
 const errorMap = require("../../utils/errorMap");
+const moment = require("moment");
 
 class VoteRecordConnector {
   constructor(ctx) {
@@ -17,12 +18,18 @@ class VoteRecordConnector {
       },
       include: [
         {
-          as: "voteRole",
-          model: this.ctx.app.model.VoteRole,
+          as: "roundRole",
+          model: this.ctx.app.model.RoundRole,
           include: [
             {
-              as: "file",
-              model: this.ctx.app.model.File,
+              as: "voteRole",
+              model: this.ctx.app.model.VoteRole,
+              include: [
+                {
+                  as: "file",
+                  model: this.ctx.app.model.File,
+                },
+              ],
             },
           ],
         },
@@ -48,12 +55,18 @@ class VoteRecordConnector {
       },
       include: [
         {
-          as: "voteRole",
-          model: this.ctx.app.model.VoteRole,
+          as: "roundRole",
+          model: this.ctx.app.model.RoundRole,
           include: [
             {
-              as: "file",
-              model: this.ctx.app.model.File,
+              as: "voteRole",
+              model: this.ctx.app.model.VoteRole,
+              include: [
+                {
+                  as: "file",
+                  model: this.ctx.app.model.File,
+                },
+              ],
             },
           ],
         },
@@ -91,13 +104,50 @@ class VoteRecordConnector {
   async createVoteRecord(data, ctx) {
     const id = getOperator(ctx);
     const { input = {} } = data;
-    return this.ctx.app.model.VoteRecord.create(
-      {
-        ...input,
-        createBy: id,
-        updateBy: id,
-      }
-    );
+    return this.ctx.app.model.VoteRecord.create({
+      ...input,
+      createBy: id,
+      updateBy: id,
+    });
+  }
+
+  /**
+   * 批量创建
+   */
+  async batchCreateVoteRecord(data, ctx) {
+    let now = new Date().getTime();
+    const id = getOperator(ctx);
+    const { input = [] } = data;
+    const count = Array.from(new Set(input.map((v) => v.roundId)));
+    if (count.length !== 1) {
+      return { code: "1", message: "roundId不一致" };
+    }
+    const round = await this.ctx.app.model.Round.findOne({
+      where: {
+        id: input[0].roundId,
+      },
+      include: [
+        {
+          as: "roundRole",
+          model: ctx.app.model.RoundRole,
+        },
+      ],
+    });
+    const roundJson = round.toJSON();
+    if (moment(roundJson.endTime).valueOf() <= now) {
+      return { code: "1", message: "失败，已超过投票时间" };
+    }
+    input.forEach((v) => {
+      v.userId = id;
+      v.createBy = id;
+      v.updateBy = id;
+    });
+    const result = await this.ctx.app.model.VoteRecord.bulkCreate(input);
+    if (result.length === input.length) {
+      return { code: "0", message: "投票成功" };
+    } else {
+      return { code: "1", message: "投票失败" };
+    }
   }
 
   /**
@@ -110,7 +160,7 @@ class VoteRecordConnector {
       this.ctx.app.model.VoteRecord.update(
         Object.assign({}, input, { updateBy: userId }),
         {
-          where: { id }
+          where: { id },
         }
       ).then((res) => {
         resolve(res[0] == 1 ? this.fetchById(id) : null);

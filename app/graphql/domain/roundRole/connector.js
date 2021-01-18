@@ -98,15 +98,16 @@ class RoundRoleConnector {
    */
   updateRoundRole(data, ctx) {
     const userId = getOperator(ctx);
-    const { input = {}, id } = data;
+    const { input = {}, id ,transaction=null} = data;
     return new Promise((resolve) => {
       this.ctx.app.model.RoundRole.update(
         Object.assign({}, input, { updateBy: userId }),
         {
           where: { id },
+          transaction
         }
       ).then((res) => {
-        resolve(res[0] == 1 ? this.fetchById(id) : null);
+        resolve(res);
       });
     });
   }

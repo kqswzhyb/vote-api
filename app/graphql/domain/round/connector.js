@@ -37,7 +37,6 @@ class RoundConnector {
     const { page = {}, filter = {} } = data;
     const rounds = this.ctx.app.model.Round.findAll({
       where: {
-        status: "0",
         ...handleFilter(filter),
       },
       include: [

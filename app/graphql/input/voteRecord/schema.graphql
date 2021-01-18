@@ -1,7 +1,7 @@
 input CreateVoteRecordInput {
   userId: String!
   roundId: String!
-  voteRoleId: String!
+  roundRoleId: String!
   voteType: String!
   isExtra: String!
   ip: String
@@ -12,7 +12,7 @@ input CreateVoteRecordInput {
 input UpdateVoteRecordInput {
   userId: String
   roundId: String
-  voteRoleId: String
+  roundRoleId: String
   voteType: String
   isExtra: String
   ip: String
@@ -24,7 +24,7 @@ input UpdateVoteRecordInput {
 input VoteRecordFilter {
   userId: String
   roundId: String
-  voteRoleId: String
+  roundRoleId: String
   voteType: String
   ip: String
 }
