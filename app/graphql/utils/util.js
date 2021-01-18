@@ -31,17 +31,17 @@ exports.handleFilter = (filter) => {
   return filter;
 };
 
-exports.getOperator = (ctx) => {
+exports.getOperator = (ctx,key='id') => {
   if (!ctx.request.header["authorization"]) {
     throw new Error("没有token");
   }
   const token = ctx.request.header["authorization"].slice(7);
-  let id;
+  let value;
   try {
     const decode = ctx.app.jwt.verify(token, ctx.app.config.jwt.secret);
-    id = decode.id;
+    value = decode[key];
   } catch (err) {
     throw new Error(err);
   }
-  return id;
+  return value;
 };

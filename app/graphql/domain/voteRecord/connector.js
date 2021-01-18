@@ -117,6 +117,8 @@ class VoteRecordConnector {
   async batchCreateVoteRecord(data, ctx) {
     let now = new Date().getTime();
     const id = getOperator(ctx);
+    const qqLevel = getOperator(ctx, "qqLevel");
+    const qqVip = getOperator(ctx, "qqVip");
     const { input = [] } = data;
     const count = Array.from(new Set(input.map((v) => v.roundId)));
     if (count.length !== 1) {
@@ -137,10 +139,29 @@ class VoteRecordConnector {
     if (moment(roundJson.endTime).valueOf() <= now) {
       return { code: "1", message: "失败，已超过投票时间" };
     }
+    const vote = await this.ctx.app.model.Vote.findOne({
+      where: {
+        id: input[0].voteId,
+      },
+      include: [
+        {
+          as: "voteConfig",
+          model: this.ctx.app.model.VoteConfig,
+        },
+      ],
+    });
+    const voteJson = vote.toJSON();
+    if (voteJson.voteConfig.voteLevel > qqLevel) {
+      return { code: "1", message: "失败，等级不满足条件" };
+    }
+    if (voteJson.voteConfig.voteQqVip !== qqVip) {
+      return { code: "1", message: "失败，会员不满足条件" };
+    }
     input.forEach((v) => {
       v.userId = id;
       v.createBy = id;
       v.updateBy = id;
+      delete v.voteId;
     });
     const result = await this.ctx.app.model.VoteRecord.bulkCreate(input);
     if (result.length === input.length) {
