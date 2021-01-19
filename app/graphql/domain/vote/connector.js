@@ -4,6 +4,7 @@ const DataLoader = require("dataloader");
 const { handleFilter, getOperator } = require("../../utils/util.js");
 const errorMap = require("../../utils/errorMap");
 const UUID = require("uuid");
+const moment = require("moment");
 
 class VoteConnector {
   constructor(ctx) {
@@ -12,7 +13,6 @@ class VoteConnector {
   }
 
   fetch(id) {
-    console.log(this.ctx,this.ctx.ip)
     const vote = this.ctx.app.model.Vote.findAll({
       where: {
         id,
@@ -285,40 +285,218 @@ async function testResult(res, ctx, id, userId, data) {
       if (data.voteType === "0") {
         const roundStageId = UUID.v4().replace(/-/g, "");
         const roundId = UUID.v4().replace(/-/g, "");
-        await ctx.connector.roundStage.createRoundStage({ input: {
-          id:roundStageId,
-          parentId: "-1",
-          voteId: data.id,
-          roleTypeId: data.voteRoleType[0].id,
-          name: "正赛",
-          startTime: data.startTime,
-          endTime: data.endTime,
-          totalCount: data.voteRole.length,
-          promotionCount: 1,
-        }, transaction }, ctx)
-        await ctx.connector.round.createRound({ input: {
-          id:roundId,
-          roundStageId,
-          parentId: "-1",
-          roundName: "正赛A组",
-          groupName:'A组',
-          startTime: data.startTime,
-          endTime: data.endTime,
-        }, transaction }, ctx)
-        await ctx.connector.roundRole.batchCreateRole({ arr: data.voteRole.map(v=>({
-          id:UUID.v4().replace(/-/g, ""),
-          roundId,
-          roleId:v.id,
-          isPromotion: "0",
-          normalCount: 0,
-          specialCount: 0,
-          totalCount: 0,
-        })), transaction }, ctx)
+        await ctx.connector.roundStage.createRoundStage(
+          {
+            input: {
+              id: roundStageId,
+              parentId: "-1",
+              voteId: data.id,
+              roleTypeId: data.voteRoleType[0].id,
+              name: "正赛",
+              startTime: data.startTime,
+              endTime: data.endTime,
+              totalCount: data.voteRole.length,
+              promotionCount: 1,
+            },
+            transaction,
+          },
+          ctx
+        );
+        await ctx.connector.round.createRound(
+          {
+            input: {
+              id: roundId,
+              roundStageId,
+              parentId: "-1",
+              roundName: "正赛A组",
+              groupName: "A组",
+              startTime: data.startTime,
+              endTime: data.endTime,
+            },
+            transaction,
+          },
+          ctx
+        );
+        await ctx.connector.roundRole.batchCreateRole(
+          {
+            arr: data.voteRole.map((v) => ({
+              id: UUID.v4().replace(/-/g, ""),
+              roundId,
+              roleId: v.id,
+              isPromotion: "0",
+              normalCount: 0,
+              specialCount: 0,
+              totalCount: 0,
+            })),
+            transaction,
+          },
+          ctx
+        );
+      }
+      if (data.voteType === "1") {
+        //   128 64 32 16 8 4 2
+        //   8  8  4  4 2 1 1  roundStage
+        //   8  4  4  2 2 2 1  round
+        const roundStageList = [
+          {
+            name: "决赛",
+            num: 1,
+            round: 1,
+          },
+          {
+            name: "半决赛",
+            num: 1,
+            round: 2,
+          },
+          {
+            name: "8进4",
+            num: 2,
+            round: 2,
+          },
+          {
+            name: "16进8",
+            num: 4,
+            round: 2,
+          },
+          {
+            name: "32进16",
+            num: 4,
+            round: 4,
+          },
+          {
+            name: "64进32",
+            num: 8,
+            round: 4,
+          },
+          {
+            name: "128进64",
+            num: 8,
+            round: 8,
+          },
+        ];
+        if (data.specialType === "64") {
+          roundStageList.pop();
+        }
+        const types = (
+          await ctx.connector.voteRoleType.fetchList({
+            page: {
+              limit: 9999,
+              offset: 0,
+            },
+            filter: {
+              voteId: JSON.stringify({
+                cond: "eq",
+                value: data.id,
+              }),
+            },
+          })
+        ).map((v) => v.toJSON());
+        types.forEach(async (item) => {
+          const arr = [];
+          const arr2 = [];
+          let front = [];
+          let index = 0;
+          roundStageList.forEach((v, i) => {
+            if (i !== 0) {
+              front = arr2.slice(
+                -(roundStageList[i - 1].num * roundStageList[i - 1].round)
+              );
+            }
+            Array.from({ length: v.num }).forEach((k, i2) => {
+              let roundStageId = UUID.v4().replace(/-/g, "");
+              arr.push({
+                id: roundStageId,
+                parentId: index + "",
+                voteId: data.id,
+                roleTypeId: item.id,
+                name: `${v.name} 第${v.num - i2}天`,
+                startTime: moment(data.endTime)
+                  .subtract(index + 1, "days")
+                  .format("YYYY-MM-DD HH:mm:ss"),
+                endTime: moment(data.endTime)
+                  .subtract(index, "days")
+                  .subtract(1, "hours")
+                  .format("YYYY-MM-DD HH:mm:ss"),
+                totalCount: 2,
+                promotionCount: 1,
+              });
+              Array.from({ length: v.round }).forEach((j, i3) => {
+                let roundId = UUID.v4().replace(/-/g, "");
+                arr2.push({
+                  id: roundId,
+                  roundStageId,
+                  parentId:
+                    index === 0
+                      ? "-1"
+                      : front[Math.ceil((i2 * v.round + i3 - 1) / 2)].id,
+                  roundName: "A组",
+                  groupName: "A组",
+                  startTime: moment(data.endTime)
+                    .subtract(index + 1, "days")
+                    .format("YYYY-MM-DD HH:mm:ss"),
+                  endTime: moment(data.endTime)
+                    .subtract(index, "days")
+                    .subtract(1, "hours")
+                    .format("YYYY-MM-DD HH:mm:ss"),
+                });
+              });
+              index += 1;
+            });
+          });
+          const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+          const roles = (
+            await ctx.connector.voteRole.fetchList({
+              page: {
+                limit: 9999,
+                offset: 0,
+              },
+              filter: {
+                roleTypeId: JSON.stringify({
+                  cond: "eq",
+                  value: item.id,
+                }),
+              },
+            })
+          ).map((v) => v.toJSON());
+          const newRoles = shuffle(roles);
+          const rounds = arr2.slice(-(data.specialType === "64" ? 64 : 128));
+          let roundRoles = [];
+          newRoles.forEach((v, i) => {
+            roundRoles.push({
+              id: UUID.v4().replace(/-/g, ""),
+              roundId: rounds[Math.ceil((i - 1) / 2)].id,
+              roleId: v.id,
+              isPromotion: "0",
+              normalCount: 0,
+              specialCount: 0,
+              totalCount: 0,
+            });
+          });
+          await ctx.connector.roundStage.batchCreateRoundStage(
+            {
+              arr,
+            },
+            ctx
+          );
+          await ctx.connector.round.batchCreateRound(
+            {
+              arr: arr2,
+            },
+            ctx
+          );
+          await ctx.connector.roundRole.batchCreateRole(
+            {
+              arr: roundRoles,
+            },
+            ctx
+          );
+        });
       }
       await ctx.app.model.Vote.update(
         { updateBy: userId, status: "4" },
         {
           where: { id },
+          transaction,
         }
       );
       await transaction.commit();

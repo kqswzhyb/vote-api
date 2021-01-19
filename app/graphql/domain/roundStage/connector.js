@@ -86,6 +86,17 @@ class RoundStageConnector {
   }
 
   /**
+   * 批量创建
+   */
+  async batchCreateRoundStage(data, ctx) {
+    const { arr = [], transaction = null } = data;
+    const res = await this.ctx.app.model.RoundStage.bulkCreate(arr, {
+      transaction,
+    });
+    return res;
+  }
+
+  /**
    * 更新
    */
   updateRoundStage(data, ctx) {

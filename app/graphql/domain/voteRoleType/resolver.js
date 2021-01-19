@@ -8,7 +8,6 @@ module.exports = {
     },
     // 查询所有
     voteRoleTypeList(root, data, ctx) {
-        console.log(ctx.connector.voteRoleType)
       return ctx.connector.voteRoleType.fetchList(data);
     },
   },

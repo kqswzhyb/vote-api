@@ -88,9 +88,12 @@ class RoundRoleConnector {
   /**
    * 批量创建
    */
-  batchCreateRole(data, ctx) {
+  async batchCreateRole(data, ctx) {
     const { arr = [], transaction = null } = data;
-    return this.ctx.app.model.RoundRole.bulkCreate(arr, { transaction });
+    const res = await this.ctx.app.model.RoundRole.bulkCreate(arr, {
+      transaction,
+    });
+    return res;
   }
 
   /**
@@ -98,13 +101,13 @@ class RoundRoleConnector {
    */
   updateRoundRole(data, ctx) {
     const userId = getOperator(ctx);
-    const { input = {}, id ,transaction=null} = data;
+    const { input = {}, id, transaction = null } = data;
     return new Promise((resolve) => {
       this.ctx.app.model.RoundRole.update(
         Object.assign({}, input, { updateBy: userId }),
         {
           where: { id },
-          transaction
+          transaction,
         }
       ).then((res) => {
         resolve(res);

@@ -73,6 +73,15 @@ class RoundConnector {
   }
 
   /**
+   * 批量创建
+   */
+  async batchCreateRound(data, ctx) {
+    const { arr = [], transaction = null } = data;
+    const res = await this.ctx.app.model.Round.bulkCreate(arr, { transaction });
+    return res;
+  }
+
+  /**
    * 更新
    */
   updateRound(data, ctx) {
