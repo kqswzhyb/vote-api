@@ -51,4 +51,7 @@ type Query {
   voteRecord(id: ID!): VoteRecord
   voteRecordList(page: PageInput, filter: VoteRecordFilter): [VoteRecord]!
   voteRecordCount(filter: VoteRecordFilter): Count
+
+  round(id: ID!): Round
+  roundStage(id: ID!): RoundStage
 }

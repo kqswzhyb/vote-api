@@ -10,15 +10,27 @@ class RoundConnector {
     this.loader = new DataLoader(this.fetch.bind(this));
   }
 
-  fetch(ids) {
+  fetch(id) {
     const round = this.ctx.app.model.Round.findAll({
       where: {
-        id: ids,
+        id,
       },
       include: [
         {
-          as: "role",
+          as: "roundRole",
           model: this.ctx.app.model.RoundRole,
+          include: [
+            {
+              as: "voteRole",
+              model: this.ctx.app.model.VoteRole,
+              include: [
+                {
+                  as: "file",
+                  model: this.ctx.app.model.File,
+                },
+              ],
+            },
+          ],
         },
       ],
     });
@@ -41,8 +53,20 @@ class RoundConnector {
       },
       include: [
         {
-          as: "role",
+          as: "roundRole",
           model: this.ctx.app.model.RoundRole,
+          include: [
+            {
+              as: "voteRole",
+              model: this.ctx.app.model.VoteRole,
+              include: [
+                {
+                  as: "file",
+                  model: this.ctx.app.model.File,
+                },
+              ],
+            },
+          ],
         },
       ],
       order: [["updatedAt", "DESC"]],

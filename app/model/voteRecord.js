@@ -11,10 +11,20 @@ module.exports = (app) => {
         allowNull: false,
         comment: "用户id",
       },
+      voteId: {
+        type: UUID,
+        allowNull: false,
+        comment: "比赛id",
+      },
       roundId: {
         type: UUID,
         allowNull: false,
         comment: "场次id",
+      },
+      roundStageId: {
+        type: UUID,
+        allowNull: false,
+        comment: "场次阶段id",
       },
       roundRoleId: {
         type: UUID,

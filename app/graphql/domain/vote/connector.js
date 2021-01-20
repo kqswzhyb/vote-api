@@ -377,6 +377,7 @@ async function testResult(res, ctx, id, userId, data) {
         if (data.specialType === "64") {
           roundStageList.pop();
         }
+        //获取该比赛下所有角色分类
         const types = (
           await ctx.connector.voteRoleType.fetchList({
             page: {
@@ -402,6 +403,7 @@ async function testResult(res, ctx, id, userId, data) {
                 -(roundStageList[i - 1].num * roundStageList[i - 1].round)
               );
             }
+            //创建所有场次阶段
             Array.from({ length: v.num }).forEach((k, i2) => {
               let roundStageId = UUID.v4().replace(/-/g, "");
               arr.push({
@@ -420,6 +422,7 @@ async function testResult(res, ctx, id, userId, data) {
                 totalCount: 2,
                 promotionCount: 1,
               });
+              //创建所有场次
               Array.from({ length: v.round }).forEach((j, i3) => {
                 let roundId = UUID.v4().replace(/-/g, "");
                 arr2.push({
@@ -429,7 +432,7 @@ async function testResult(res, ctx, id, userId, data) {
                     index === 0
                       ? "-1"
                       : front[Math.ceil((i2 * v.round + i3 - 1) / 2)].id,
-                  roundName: "A组",
+                  roundName: v.name+"A组",
                   groupName: "A组",
                   startTime: moment(data.endTime)
                     .subtract(index + 1, "days")
@@ -443,6 +446,7 @@ async function testResult(res, ctx, id, userId, data) {
               index += 1;
             });
           });
+          //角色乱序分组
           const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
           const roles = (
             await ctx.connector.voteRole.fetchList({
@@ -459,7 +463,7 @@ async function testResult(res, ctx, id, userId, data) {
             })
           ).map((v) => v.toJSON());
           const newRoles = shuffle(roles);
-          const rounds = arr2.slice(-(data.specialType === "64" ? 64 : 128));
+          const rounds = arr2.slice(-(data.specialType === "64" ? 32 : 64));
           let roundRoles = [];
           newRoles.forEach((v, i) => {
             roundRoles.push({

@@ -4,6 +4,7 @@ const DataLoader = require("dataloader");
 const { handleFilter, getOperator } = require("../../utils/util.js");
 const errorMap = require("../../utils/errorMap");
 const moment = require("moment");
+const { Op } = require("Sequelize");
 
 class VoteRecordConnector {
   constructor(ctx) {
@@ -120,23 +121,36 @@ class VoteRecordConnector {
     const qqLevel = getOperator(ctx, "qqLevel");
     const qqVip = getOperator(ctx, "qqVip");
     const { input = [] } = data;
-    const count = Array.from(new Set(input.map((v) => v.roundId)));
+    let count = Array.from(new Set(input.map((v) => v.voteId)));
     if (count.length !== 1) {
-      return { code: "1", message: "roundId不一致" };
+      return { code: "1", message: "voteId不一致" };
     }
-    const round = await this.ctx.app.model.Round.findOne({
-      where: {
-        id: input[0].roundId,
-      },
-      include: [
-        {
-          as: "roundRole",
-          model: ctx.app.model.RoundRole,
+    count = Array.from(new Set(input.map((v) => v.roundStageId)));
+    if (count.length !== 1) {
+      return { code: "1", message: "roundStageId不一致" };
+    }
+    const record = (
+      await this.ctx.app.model.VoteRecord.findAll({
+        where: {
+          roundId: {
+            [Op.between]: input.map((v) => v.roundId),
+          },
         },
-      ],
+      })
+    ).map((v) => v.toJSON());
+    if (record.length) {
+      return { code: "1", message: "失败，存在已投票的场次" };
+    }
+    const roundStage = await this.ctx.app.model.RoundStage.findOne({
+      where: {
+        id: input[0].roundStageId,
+      },
     });
-    const roundJson = round.toJSON();
-    if (moment(roundJson.endTime).valueOf() <= now) {
+    const roundStageJson = roundStage.toJSON();
+    if (moment(roundStageJson.startTime).valueOf() >= now) {
+      return { code: "1", message: "失败，投票还未开始" };
+    }
+    if (moment(roundStageJson.endTime).valueOf() <= now) {
       return { code: "1", message: "失败，已超过投票时间" };
     }
     const vote = await this.ctx.app.model.Vote.findOne({
@@ -161,7 +175,6 @@ class VoteRecordConnector {
       v.userId = id;
       v.createBy = id;
       v.updateBy = id;
-      delete v.voteId;
     });
     const result = await this.ctx.app.model.VoteRecord.bulkCreate(input);
     if (result.length === input.length) {

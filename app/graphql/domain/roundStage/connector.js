@@ -23,6 +23,18 @@ class RoundStageConnector {
             {
               as: "roundRole",
               model: this.ctx.app.model.RoundRole,
+              include: [
+                {
+                  as: "voteRole",
+                  model: this.ctx.app.model.VoteRole,
+                  include: [
+                    {
+                      as: "file",
+                      model: this.ctx.app.model.File,
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
@@ -54,6 +66,18 @@ class RoundStageConnector {
             {
               as: "roundRole",
               model: this.ctx.app.model.RoundRole,
+              include: [
+                {
+                  as: "voteRole",
+                  model: this.ctx.app.model.VoteRole,
+                  include: [
+                    {
+                      as: "file",
+                      model: this.ctx.app.model.File,
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
