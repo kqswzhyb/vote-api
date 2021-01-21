@@ -90,6 +90,19 @@ module.exports = () => {
     proxy: true,
     maxIpsCount: 1,
     ipHeaders: "X-Real-Ip, X-Forwarded-For",
+    io: {
+      init: {}, // passed to engine.io
+      namespace: {
+        "/": {
+          connectionMiddleware: ['connection'],
+          packetMiddleware: [],
+        },
+      },
+      redis: {
+        host: '127.0.0.1',
+        port: 6379,
+      },
+    },
   };
 
   // should change to your own

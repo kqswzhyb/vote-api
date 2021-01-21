@@ -133,8 +133,9 @@ class VoteRecordConnector {
       await this.ctx.app.model.VoteRecord.findAll({
         where: {
           roundId: {
-            [Op.between]: input.map((v) => v.roundId),
+            [Op.in]: input.map((v) => v.roundId),
           },
+          userId: id,
         },
       })
     ).map((v) => v.toJSON());
