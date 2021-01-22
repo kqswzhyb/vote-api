@@ -42,4 +42,8 @@ type Mutation {
   batchCreateVoteRecord (input: [CreateVoteRecordInput]!): ResultMessage
   updateVoteRecord (id: ID!, input: UpdateVoteRecordInput!): VoteRecord
   deleteVoteRecord (id: ID!): DeleteCallback
+
+  createUserFollow (input: CreateUserFollowInput!): UserFollow
+  updateUserFollow (id: ID!, input: UpdateUserFollowInput!): UserFollow
+  deleteUserFollow (id: ID!): DeleteCallback
 }

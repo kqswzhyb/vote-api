@@ -26,10 +26,11 @@ module.exports = {
     });
 
     const data = res.map((v) => v.toJSON());
-    let transaction;
-    try {
-      transaction = await ctx.model.transaction();
-      data.forEach(async (v) => {
+
+    data.forEach(async (v, i) => {
+      let transaction;
+      try {
+        transaction = await ctx.model.transaction();
         //计算票数
         await calcVoteCountSimple(ctx, v, transaction);
         //获取该场次所有角色
@@ -67,10 +68,10 @@ module.exports = {
             transaction,
           }
         );
-      });
-      await transaction.commit();
-    } catch (err) {
-      await transaction.rollback();
-    }
+        await transaction.commit();
+      } catch (err) {
+        await transaction.rollback();
+      }
+    });
   },
 };

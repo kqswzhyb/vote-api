@@ -14,7 +14,7 @@ class MessageController extends Controller {
       const { target, payload } = message;
       if (!target) return;
       const msg = ctx.helper.parseMsg('message', payload, { client, target });
-      nsp.emit(target, msg);
+      nsp.sockets[client].emit(target, msg);
     } catch (error) {
       app.logger.error(error);
     }

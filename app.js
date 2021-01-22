@@ -129,5 +129,18 @@ module.exports = (app) => {
         status: "0",
       },
     });
+    app.model.UserFollow.hasOne(app.model.User, {
+      as: "user",
+      foreignKey: "id",
+      sourceKey: "followId",
+      scope: {
+        status: "0",
+      },
+    });
+    app.model.UserFollow.hasOne(app.model.Vote, {
+      as: "vote",
+      foreignKey: "id",
+      sourceKey: "followId",
+    });
   });
 };

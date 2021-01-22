@@ -1,4 +1,5 @@
 "use strict";
+const qs = require("qs");
 
 module.exports = () => {
   const config = {
@@ -94,13 +95,18 @@ module.exports = () => {
       init: {}, // passed to engine.io
       namespace: {
         "/": {
-          connectionMiddleware: ['connection'],
+          connectionMiddleware: ["connection"],
           packetMiddleware: [],
         },
       },
       redis: {
-        host: '127.0.0.1',
+        host: "127.0.0.1",
         port: 6379,
+      },
+      generateId: (req) => {
+        //自定义 socket.id 生成函数
+        const data = qs.parse(req.url.split("?")[1]);
+        return data.userId; // custom id must be unique
       },
     },
   };

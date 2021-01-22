@@ -1,0 +1,17 @@
+union Follow = User | Vote
+
+type UserFollow implements Base {
+  id: ID!
+  userId: String!
+  followId: String!
+  followType: String!
+  follow: Follow
+  vote: Vote
+  user: User
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}

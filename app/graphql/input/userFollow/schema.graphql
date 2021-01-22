@@ -1,0 +1,22 @@
+input CreateUserFollowInput {
+  userId: String!
+  followId: String!
+  followType: String!
+  createBy: String
+  remark: String
+}
+
+input UpdateUserFollowInput {
+  userId: String
+  followId: String
+  followType: String
+  status: String
+  remark: String
+  updateBy: String
+}
+
+input UserFollowFilter {
+  userId: String
+  followId: String
+  followType: String
+}

@@ -54,4 +54,8 @@ type Query {
 
   round(id: ID!): Round
   roundStage(id: ID!): RoundStage
+
+  userFollow(id: ID!): UserFollow
+  userFollowList(page: PageInput, filter: UserFollowFilter): [UserFollow]!
+  userFollowCount(filter: UserFollowFilter): Count
 }
