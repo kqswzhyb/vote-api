@@ -46,4 +46,17 @@ type Mutation {
   createUserFollow (input: CreateUserFollowInput!): UserFollow
   updateUserFollow (id: ID!, input: UpdateUserFollowInput!): UserFollow
   deleteUserFollow (id: ID!): DeleteCallback
+
+  createUserMessage (input: CreateUserMessageInput!): UserMessage
+  batchCreateUserMessage (input: [CreateUserMessageInput]!): ResultMessage
+  updateUserMessage (id: ID!, input: UpdateUserMessageInput!): UserMessage
+  deleteUserMessage (id: ID!): DeleteCallback
+
+  createVoteDiscuss (input: CreateVoteDiscussInput!): VoteDiscuss
+  updateVoteDiscuss (id: ID!, input: UpdateVoteDiscussInput!): VoteDiscuss
+  deleteVoteDiscuss (id: ID!): DeleteCallback
+
+  createVoteDiscussSignal (input: CreateVoteDiscussSignalInput!): VoteDiscussSignal
+  updateVoteDiscussSignal (id: ID!, input: UpdateVoteDiscussSignalInput!): VoteDiscussSignal
+  deleteVoteDiscussSignal (id: ID!): DeleteCallback
 }

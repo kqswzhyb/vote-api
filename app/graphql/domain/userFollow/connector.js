@@ -133,6 +133,22 @@ class UserFollowConnector {
   }
 
   /**
+   * 查询总数
+   * @returns {*}
+   */
+  async fetchCount(data) {
+    const { filter = {} } = data;
+    const count = await this.ctx.app.model.UserFollow.count({
+      where: {
+        ...handleFilter(filter),
+      },
+    });
+    return {
+      total: count,
+    };
+  }
+
+  /**
    * 创建
    */
   createUserFollow(data, ctx) {

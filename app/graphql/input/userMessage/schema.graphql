@@ -1,0 +1,26 @@
+input CreateUserMessageInput {
+  userId: String!
+  title: String!
+  content: String!
+  url: String
+  createBy: String
+  remark: String
+}
+
+input UpdateUserMessageInput {
+  userId: String
+  title: String
+  content: String
+  url: String
+  status: String
+  remark: String
+  updateBy: String
+}
+
+input UserMessageFilter {
+  userId: String
+  title: String
+  content: String
+  url: String
+  status: String
+}

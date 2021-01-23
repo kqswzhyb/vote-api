@@ -1,0 +1,32 @@
+input CreateVoteDiscussInput {
+  userId: String!
+  voteId: String!
+  replyId: String
+  content: String!
+  likeCount: Int!
+  dislikeCount: Int!
+  createBy: String
+  remark: String
+}
+
+input UpdateVoteDiscussInput {
+  userId: String
+  voteId: String
+  replyId: String
+  content: String
+  likeCount: Int
+  dislikeCount: Int
+  status: String
+  remark: String
+  updateBy: String
+}
+
+input VoteDiscussFilter {
+  userId: String
+  voteId: String
+  replyId: String
+  content: String
+  likeCount: Int
+  dislikeCount: Int
+  status: String
+}

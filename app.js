@@ -142,5 +142,10 @@ module.exports = (app) => {
       foreignKey: "id",
       sourceKey: "followId",
     });
+    app.model.VoteDiscuss.hasOne(app.model.User, {
+      as: "user",
+      foreignKey: "id",
+      sourceKey: "userId",
+    });
   });
 };

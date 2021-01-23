@@ -58,4 +58,14 @@ type Query {
   userFollow(id: ID!): UserFollow
   userFollowList(page: PageInput, filter: UserFollowFilter): [UserFollow]!
   userFollowCount(filter: UserFollowFilter): Count
+
+  userMessage(id: ID!): UserMessage
+  userMessageList(page: PageInput, filter: UserMessageFilter): [UserMessage]!
+  userMessageCount(filter: UserMessageFilter): Count
+
+  voteDiscuss(id: ID!): VoteDiscuss
+  voteDiscussList(page: PageInput): [VoteDiscuss]!
+
+  voteDiscussSignal(id: ID!): VoteDiscussSignal
+  voteDiscussSignalList(page: PageInput): [VoteDiscussSignal]!
 }

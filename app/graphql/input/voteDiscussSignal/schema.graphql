@@ -1,0 +1,23 @@
+input CreateVoteDiscussSignalInput {
+  userId: String!
+  voteDiscussId: String!
+  signaltype: String!
+  createBy: String
+  remark: String
+}
+
+input UpdateVoteDiscussSignalInput {
+  userId: String
+  voteDiscussId: String
+  signaltype: String
+  status: String
+  remark: String
+  updateBy: String
+}
+
+input VoteDiscussSignalFilter {
+  userId: String
+  voteDiscussId: String
+  signaltype: String
+  status: String
+}

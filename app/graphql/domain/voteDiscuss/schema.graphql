@@ -1,0 +1,16 @@
+type VoteDiscuss implements Base {
+  id: ID!
+  userId: String!
+  user: User
+  voteId: String!
+  replyId: String
+  content: String!
+  likeCount: Int
+  dislikeCount: Int
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}
