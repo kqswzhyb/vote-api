@@ -39,14 +39,31 @@ class VoteDiscussConnector {
    * 查询所有
    * @returns {*}
    */
-  fetchList(data) {
+  async fetchList(data) {
     const { page = {}, filter = {} } = data;
-    const voteDiscusss = this.ctx.app.model.VoteDiscuss.findAll({
+    const voteDiscuss = await this.ctx.app.model.VoteDiscuss.findAll({
       where: {
         status: "0",
         ...handleFilter(filter),
+        replyId: "-1",
       },
       include: [
+        {
+          as: "voteDiscuss",
+          model: this.ctx.app.model.VoteDiscuss,
+          include: [
+            {
+              as: "user",
+              model: this.ctx.app.model.User,
+              include: [
+                {
+                  as: "file",
+                  model: this.ctx.app.model.File,
+                },
+              ],
+            },
+          ],
+        },
         {
           as: "user",
           model: this.ctx.app.model.User,
@@ -58,11 +75,11 @@ class VoteDiscussConnector {
           ],
         },
       ],
-      order: [["updatedAt", "DESC"]],
+      order: [["createdAt", "DESC"]],
       limit: page.limit || 10,
       offset: page.offset || 0,
-    });
-    return voteDiscusss;
+    })
+    return voteDiscuss;
   }
 
   fetchById(id) {
@@ -70,11 +87,34 @@ class VoteDiscussConnector {
   }
 
   /**
+   * 查询总数
+   * @returns {*}
+   */
+  async fetchCount(data) {
+    const { filter = {} } = data;
+    const count = await this.ctx.app.model.VoteDiscuss.count({
+      where: {
+        status: "0",
+        ...handleFilter(filter),
+      },
+    });
+    return {
+      total: count,
+    };
+  }
+
+  /**
    * 创建
    */
-  createVoteDiscuss(data, ctx) {
+  async createVoteDiscuss(data, ctx) {
     const id = getOperator(ctx);
     const { input = {}, transaction = null } = data;
+    const maxFloor = await this.ctx.app.model.VoteDiscuss.max("floor", {
+      where: {
+        voteId: input.voteId,
+      },
+    });
+    input.floor = !maxFloor ? 1 : input.replyId === "-1" ? maxFloor + 1 : 0;
     return this.ctx.app.model.VoteDiscuss.create(
       {
         ...input,

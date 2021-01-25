@@ -37,6 +37,12 @@ module.exports = (app) => {
         comment: "踩数",
         defaultValue: 0,
       },
+      floor: {
+        type: INTEGER,
+        allowNull: false,
+        comment: "楼层",
+        defaultValue: 1,
+      },
       ...base,
     },
     {

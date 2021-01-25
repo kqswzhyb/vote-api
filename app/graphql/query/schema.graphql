@@ -64,7 +64,8 @@ type Query {
   userMessageCount(filter: UserMessageFilter): Count
 
   voteDiscuss(id: ID!): VoteDiscuss
-  voteDiscussList(page: PageInput): [VoteDiscuss]!
+  voteDiscussList(page: PageInput,filter: VoteDiscussFilter): [VoteDiscuss]!
+  voteDiscussCount(filter: VoteDiscussFilter): Count
 
   voteDiscussSignal(id: ID!): VoteDiscussSignal
   voteDiscussSignalList(page: PageInput): [VoteDiscussSignal]!

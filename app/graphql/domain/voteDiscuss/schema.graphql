@@ -4,9 +4,11 @@ type VoteDiscuss implements Base {
   user: User
   voteId: String!
   replyId: String
+  voteDiscuss: [VoteDiscuss]!
   content: String!
   likeCount: Int
   dislikeCount: Int
+  floor: Int
   createdAt: Date
   updatedAt: Date
   status: String

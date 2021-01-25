@@ -5,6 +5,7 @@ input CreateVoteDiscussInput {
   content: String!
   likeCount: Int!
   dislikeCount: Int!
+  floor: Int
   createBy: String
   remark: String
 }
@@ -28,5 +29,6 @@ input VoteDiscussFilter {
   content: String
   likeCount: Int
   dislikeCount: Int
+  floor: Int
   status: String
 }

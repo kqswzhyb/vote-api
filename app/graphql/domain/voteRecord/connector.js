@@ -19,6 +19,14 @@ class VoteRecordConnector {
       },
       include: [
         {
+          as: "vote",
+          model: this.ctx.app.model.Vote,
+        },
+        {
+          as: "round",
+          model: this.ctx.app.model.Round,
+        },
+        {
           as: "roundRole",
           model: this.ctx.app.model.RoundRole,
           include: [
@@ -55,6 +63,14 @@ class VoteRecordConnector {
         ...handleFilter(filter),
       },
       include: [
+        {
+          as: "vote",
+          model: this.ctx.app.model.Vote,
+        },
+        {
+          as: "round",
+          model: this.ctx.app.model.Round,
+        },
         {
           as: "roundRole",
           model: this.ctx.app.model.RoundRole,

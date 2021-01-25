@@ -8,7 +8,9 @@ type VoteRecord implements Base {
   voteType: String!
   isExtra: String!
   ip:String
+  vote: Vote
   roundRole: RoundRole
+  round: Round
   createdAt: Date
   updatedAt: Date
   status: String
