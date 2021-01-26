@@ -3,6 +3,7 @@
 const DataLoader = require("dataloader");
 const { handleFilter, getOperator } = require("../../utils/util.js");
 const errorMap = require("../../utils/errorMap");
+const { Op } = require("Sequelize");
 
 class VoteDiscussConnector {
   constructor(ctx) {
@@ -17,10 +18,17 @@ class VoteDiscussConnector {
       },
       include: [
         {
+          attributes: ["id", "voteId", "userId", "content"],
+          as: "voteDiscuss",
+          model: this.ctx.app.model.VoteDiscuss,
+        },
+        {
+          attributes: ["nickname"],
           as: "user",
           model: this.ctx.app.model.User,
           include: [
             {
+              attributes: ["fileFullPath"],
               as: "file",
               model: this.ctx.app.model.File,
             },
@@ -40,45 +48,64 @@ class VoteDiscussConnector {
    * @returns {*}
    */
   async fetchList(data) {
+    let id;
+    try {
+      id = getOperator(this.ctx);
+    } catch (err) {
+      id = null;
+    }
     const { page = {}, filter = {} } = data;
-    const voteDiscuss = await this.ctx.app.model.VoteDiscuss.findAll({
-      where: {
-        status: "0",
-        ...handleFilter(filter),
-        replyId: "-1",
-      },
-      include: [
-        {
-          as: "voteDiscuss",
-          model: this.ctx.app.model.VoteDiscuss,
-          include: [
-            {
-              as: "user",
-              model: this.ctx.app.model.User,
-              include: [
-                {
-                  as: "file",
-                  model: this.ctx.app.model.File,
-                },
-              ],
-            },
-          ],
+    const voteDiscuss = (
+      await this.ctx.app.model.VoteDiscuss.findAll({
+        where: {
+          status: "0",
+          ...handleFilter(filter),
         },
-        {
-          as: "user",
-          model: this.ctx.app.model.User,
-          include: [
-            {
-              as: "file",
-              model: this.ctx.app.model.File,
+        include: [
+          {
+            attributes: ["id", "voteId", "userId", "content"],
+            as: "voteDiscuss",
+            model: this.ctx.app.model.VoteDiscuss,
+          },
+          {
+            attributes: ["nickname"],
+            as: "user",
+            model: this.ctx.app.model.User,
+            include: [
+              {
+                attributes: ["fileFullPath"],
+                as: "file",
+                model: this.ctx.app.model.File,
+              },
+            ],
+          },
+        ],
+        order: [["createdAt", "DESC"]],
+        limit: page.limit || 10,
+        offset: page.offset || 0,
+      })
+    ).map((v) => v.toJSON());
+    //如果有id,同时把标识带出来
+    if (id) {
+      const voteDiscussSignal = (
+        await this.ctx.app.model.VoteDiscussSignal.findAll({
+          where: {
+            status: "0",
+            voteDiscussId: {
+              [Op.in]: voteDiscuss.map((v) => v.id),
             },
-          ],
-        },
-      ],
-      order: [["createdAt", "DESC"]],
-      limit: page.limit || 10,
-      offset: page.offset || 0,
-    })
+            userId: id,
+          },
+          order: [["updatedAt", "DESC"]],
+        })
+      ).map((v) => v.toJSON());
+      voteDiscussSignal.forEach((v) => {
+        const index = voteDiscuss.findIndex(
+          (item) => item.id === v.voteDiscussId
+        );
+        voteDiscuss[index].signalType = v.signalType;
+      });
+    }
     return voteDiscuss;
   }
 
@@ -115,14 +142,17 @@ class VoteDiscussConnector {
       },
     });
     input.floor = !maxFloor ? 1 : input.replyId === "-1" ? maxFloor + 1 : 0;
-    return this.ctx.app.model.VoteDiscuss.create(
-      {
-        ...input,
-        createBy: id,
-        updateBy: id,
-      },
-      { transaction }
-    );
+    const result = (
+      await this.ctx.app.model.VoteDiscuss.create(
+        {
+          ...input,
+          createBy: id,
+          updateBy: id,
+        },
+        { transaction }
+      )
+    ).toJSON();
+    return this.fetchById(result.id);
   }
 
   /**
@@ -131,19 +161,6 @@ class VoteDiscussConnector {
   batchCreateVoteDiscuss(data, ctx) {
     const { arr = [], transaction = null } = data;
     return this.ctx.app.model.VoteDiscuss.bulkCreate(arr, { transaction });
-  }
-
-  /**
-   * 删除
-   */
-  deleteVoteDiscussByVote(data, ctx) {
-    const { id, transaction = null } = data;
-    return this.ctx.app.model.VoteDiscuss.destroy({
-      where: {
-        voteId: id,
-      },
-      transaction,
-    });
   }
 
   /**

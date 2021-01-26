@@ -22,7 +22,7 @@ module.exports = {
     },
     //删除
     deleteVoteDiscussSignal(root, data, ctx) {
-      return ctx.connector.voteDiscussSignal.deleteVoteDiscussSignal(data);
+      return ctx.connector.voteDiscussSignal.deleteVoteDiscussSignal(data,ctx);
     },
   }
 };

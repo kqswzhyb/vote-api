@@ -46,19 +46,65 @@ class VoteDiscussSignalConnector {
   }
 
   /**
+   * 统计标识数
+   * @returns {*}
+   */
+  async calcCount(id) {
+    const voteDiscussSignals = (
+      await this.ctx.app.model.VoteDiscussSignal.findAll({
+        where: {
+          status: "0",
+          voteDiscussId: id,
+        },
+        attributes: ["signalType"],
+      })
+    ).map((v) => v.toJSON());
+    let likeCount = 0;
+    let dislikeCount = 0;
+
+    voteDiscussSignals.forEach((v) => {
+      if (v.signalType === "0") {
+        likeCount++;
+      } else {
+        dislikeCount++;
+      }
+    });
+    return { likeCount, dislikeCount };
+  }
+
+  /**
    * 创建
    */
-  createVoteDiscussSignal(data, ctx) {
+  async createVoteDiscussSignal(data, ctx) {
     const id = getOperator(ctx);
-    const { input = {}, transaction = null } = data;
-    return this.ctx.app.model.VoteDiscussSignal.create(
-      {
-        ...input,
-        createBy: id,
-        updateBy: id,
-      },
-      { transaction }
+    const { input = {} } = data;
+    let transaction;
+    let result;
+    try {
+      transaction = await ctx.model.transaction();
+      await this.deleteVoteDiscussSignalByVoteDiscussId(
+        { voteDiscussId: input.voteDiscussId, transaction },
+        id
+      );
+      result = await this.ctx.app.model.VoteDiscussSignal.create(
+        {
+          ...input,
+          userId: id,
+          createBy: id,
+          updateBy: id,
+        },
+        { transaction }
+      );
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+    }
+    const updateInput = await this.calcCount(input.voteDiscussId);
+    await ctx.connector.voteDiscuss.updateVoteDiscuss(
+      { input: updateInput, id: input.voteDiscussId },
+      ctx
     );
+    return result;
   }
 
   /**
@@ -66,20 +112,24 @@ class VoteDiscussSignalConnector {
    */
   batchCreateVoteDiscussSignal(data, ctx) {
     const { arr = [], transaction = null } = data;
-    return this.ctx.app.model.VoteDiscussSignal.bulkCreate(arr, { transaction });
+    return this.ctx.app.model.VoteDiscussSignal.bulkCreate(arr, {
+      transaction,
+    });
   }
 
   /**
    * 删除
    */
-  deleteVoteDiscussSignalByVote(data, ctx) {
-    const { id, transaction = null } = data;
-    return this.ctx.app.model.VoteDiscussSignal.destroy({
+  async deleteVoteDiscussSignalByVoteDiscussId(data, userId) {
+    const { voteDiscussId, transaction = null } = data;
+    const result = await this.ctx.app.model.VoteDiscussSignal.destroy({
       where: {
-        voteId: id,
+        voteDiscussId,
+        userId,
       },
       transaction,
     });
+    return result;
   }
 
   /**
@@ -103,17 +153,29 @@ class VoteDiscussSignalConnector {
   /**
    * 删除
    */
-  deleteVoteDiscussSignal(data) {
+  async deleteVoteDiscussSignal(data, ctx) {
+    const userId = getOperator(ctx);
     const { id } = data;
-    return new Promise((resolve) => {
-      this.ctx.app.model.VoteDiscussSignal.destroy({ where: { id } }).then((res) => {
-        resolve(
-          res == 1
-            ? { code: "0", message: "成功" }
-            : { code: "1001", message: errorMap["1001"] }
-        );
-      });
-    });
+    let transaction;
+    let result;
+    try {
+      transaction = await ctx.model.transaction();
+      await this.deleteVoteDiscussSignalByVoteDiscussId(
+        { voteDiscussId: id, transaction },
+        userId
+      );
+      result = { code: "0", message: "成功" };
+      await transaction.commit();
+    } catch (err) {
+      result = { code: "1", message: "失败" };
+      await transaction.rollback();
+    }
+    const updateInput = await this.calcCount(id);
+    await ctx.connector.voteDiscuss.updateVoteDiscuss(
+      { input: updateInput, id },
+      ctx
+    );
+    return result;
   }
 }
 

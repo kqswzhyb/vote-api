@@ -1,7 +1,7 @@
 input CreateVoteDiscussSignalInput {
   userId: String!
   voteDiscussId: String!
-  signaltype: String!
+  signalType: String!
   createBy: String
   remark: String
 }
@@ -9,7 +9,7 @@ input CreateVoteDiscussSignalInput {
 input UpdateVoteDiscussSignalInput {
   userId: String
   voteDiscussId: String
-  signaltype: String
+  signalType: String
   status: String
   remark: String
   updateBy: String
@@ -18,6 +18,6 @@ input UpdateVoteDiscussSignalInput {
 input VoteDiscussSignalFilter {
   userId: String
   voteDiscussId: String
-  signaltype: String
+  signalType: String
   status: String
 }

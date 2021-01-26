@@ -5,6 +5,7 @@ type VoteDiscuss implements Base {
   voteId: String!
   replyId: String
   voteDiscuss: [VoteDiscuss]!
+  signalType: String
   content: String!
   likeCount: Int
   dislikeCount: Int
