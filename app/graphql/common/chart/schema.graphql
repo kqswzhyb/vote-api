@@ -1,0 +1,12 @@
+type Chart {
+  times: [Date]!
+  roles: [Roles]!
+}
+
+type Roles {
+  roundRoleId: String!
+  name: String!
+  totalCount: [Int]!
+  specialCount: [Int]!
+  normalCount: [Int]!
+}

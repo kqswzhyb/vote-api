@@ -32,6 +32,15 @@ exports.calcVoteCount = async (ctx, value = "all") => {
       ],
     });
     let data = res.map((v) => v.toJSON());
+    data.forEach((v) => {
+      if (v.voteConfig.showChart === "0") {
+        v.roundStage.forEach((k) => {
+          k.round.forEach((item) => {
+            item.showChart = true;
+          });
+        });
+      }
+    });
     if (value !== "all") {
       data = data.filter((v) => v.voteConfig.voteUpdateType === value);
     }
@@ -61,6 +70,15 @@ exports.calcVoteCount = async (ctx, value = "all") => {
               roundRoleId: { [Op.eq]: k.id },
             })) * 2;
           const totalCount = normalCount + specialCount;
+          if (v.showChart) {
+            await ctx.app.model.RoundRoleChart.create({
+              normalCount,
+              specialCount,
+              totalCount,
+              roundId: v.id,
+              roundRoleId: k.id,
+            });
+          }
           await ctx.app.model.RoundRole.update(
             { normalCount, specialCount, totalCount },
             {
@@ -91,6 +109,15 @@ exports.calcVoteCountSimple = async (ctx, row, transaction = null) => {
           roundRoleId: { [Op.eq]: k.id },
         })) * 2;
       const totalCount = normalCount + specialCount;
+      if(row.roundStage.vote.voteConfig.showChart==='0'){
+        await ctx.app.model.RoundRoleChart.create({
+          normalCount,
+          specialCount,
+          totalCount,
+          roundId: row.id,
+          roundRoleId: k.id,
+        });
+      }
       await ctx.app.model.RoundRole.update(
         { normalCount, specialCount, totalCount },
         {

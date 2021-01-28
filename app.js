@@ -99,6 +99,16 @@ module.exports = (app) => {
       foreignKey: "roundStageId",
       sourceKey: "id",
     });
+    app.model.RoundStage.hasOne(app.model.Vote, {
+      as: "vote",
+      foreignKey: "id",
+      sourceKey: "voteId",
+    });
+    app.model.Round.hasOne(app.model.RoundStage, {
+      as: "roundStage",
+      foreignKey: "id",
+      sourceKey: "roundStageId",
+    });
     app.model.Round.hasMany(app.model.RoundRole, {
       as: "roundRole",
       foreignKey: "roundId",
@@ -152,6 +162,11 @@ module.exports = (app) => {
       as: "round",
       foreignKey: "id",
       sourceKey: "roundId",
+    });
+    app.model.RoundRoleChart.hasOne(app.model.RoundRole, {
+      as: "roundRole",
+      foreignKey: "id",
+      sourceKey: "roundRoleId",
     });
   });
 };

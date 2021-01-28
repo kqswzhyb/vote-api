@@ -1,0 +1,15 @@
+type RoundRoleChart implements Base {
+  id: ID!
+  roundId: String!
+  roundRoleId: String!
+  normalCount: Int
+  specialCount: Int
+  totalCount: Int
+  roundRole: RoundRole
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}

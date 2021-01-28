@@ -19,6 +19,25 @@ module.exports = {
       },
       include: [
         {
+          attributes: ["id", "voteId"],
+          as: "roundStage",
+          model: ctx.app.model.RoundStage,
+          include:[
+            {
+              attributes: ["id"],
+              as: "vote",
+              model: ctx.app.model.Vote,
+              include:[
+                {
+                  attributes: ["id", "voteId","showChart"],
+                  as: "voteConfig",
+                  model: ctx.app.model.VoteConfig,
+                },
+              ]
+            }
+          ]
+        },
+        {
           as: "roundRole",
           model: ctx.app.model.RoundRole,
         },

@@ -69,4 +69,6 @@ type Query {
 
   voteDiscussSignal(id: ID!): VoteDiscussSignal
   voteDiscussSignalList(page: PageInput): [VoteDiscussSignal]!
+
+  roundRoleChart(id: ID!): Chart
 }
