@@ -1,0 +1,15 @@
+type DataAnalysis implements Base {
+  id: ID!
+  voteId: String!
+  targetId: String!
+  typeId: String!
+  targetType: String!
+  value: String!
+  sort: Int
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}

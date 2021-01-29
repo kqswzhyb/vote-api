@@ -71,4 +71,12 @@ type Query {
   voteDiscussSignalList(page: PageInput): [VoteDiscussSignal]!
 
   roundRoleChart(id: ID!): Chart
+
+  dataAnalysisType(id: ID!): DataAnalysisType
+  dataAnalysisTypeList(page: PageInput, filter: DataAnalysisTypeFilter): [DataAnalysisType]!
+  dataAnalysisTypeCount(filter: DataAnalysisTypeFilter): Count
+
+  dataAnalysis(id: ID!): DataAnalysis
+  dataAnalysisList(page: PageInput, filter: DataAnalysisFilter): [DataAnalysis]!
+  dataAnalysisCount(filter: DataAnalysisFilter): Count
 }

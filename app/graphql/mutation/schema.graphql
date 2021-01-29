@@ -59,4 +59,12 @@ type Mutation {
   createVoteDiscussSignal (input: CreateVoteDiscussSignalInput!): VoteDiscussSignal
   updateVoteDiscussSignal (id: ID!, input: UpdateVoteDiscussSignalInput!): VoteDiscussSignal
   deleteVoteDiscussSignal (id: ID!): DeleteCallback
+
+  createDataAnalysisType (input: CreateDataAnalysisTypeInput!): DataAnalysisType
+  updateDataAnalysisType (id: ID!, input: UpdateDataAnalysisTypeInput!): DataAnalysisType
+  deleteDataAnalysisType (id: ID!): DeleteCallback
+
+  createDataAnalysis (input: CreateDataAnalysisInput!): DataAnalysis
+  updateDataAnalysis (id: ID!, input: UpdateDataAnalysisInput!): DataAnalysis
+  deleteDataAnalysis (id: ID!): DeleteCallback
 }

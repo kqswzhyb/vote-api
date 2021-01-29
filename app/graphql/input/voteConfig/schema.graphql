@@ -8,6 +8,7 @@ input CreateVoteConfigInput {
   voteLevel: Int!
   voteQqVip: String!
   diyBg: String
+  dataAnalysis: String
   file: FileInput
   createBy: String
   remark: String
@@ -23,6 +24,7 @@ input UpdateVoteConfigInput {
   voteQqVip: String!
   file: FileInput
   diyBg: String
+  dataAnalysis: String
   status: String
   remark: String
   updateBy: String

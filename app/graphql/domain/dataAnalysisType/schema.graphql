@@ -1,0 +1,11 @@
+type DataAnalysisType implements Base {
+  id: ID!
+  name: String!
+  value: String!
+  createdAt: Date
+  updatedAt: Date
+  status: String
+  remark: String
+  createBy: String
+  updateBy: String
+}

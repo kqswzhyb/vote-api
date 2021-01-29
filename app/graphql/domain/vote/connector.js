@@ -292,7 +292,7 @@ async function testResult(res, ctx, id, userId, data) {
               parentId: "-1",
               voteId: data.id,
               roleTypeId: data.voteRoleType[0].id,
-              name: "正赛",
+              name: "比赛",
               startTime: data.startTime,
               endTime: data.endTime,
               totalCount: data.voteRole.length,
@@ -308,7 +308,7 @@ async function testResult(res, ctx, id, userId, data) {
               id: roundId,
               roundStageId,
               parentId: "-1",
-              roundName: "正赛A组",
+              roundName: "比赛A组",
               groupName: "A组",
               startTime: data.startTime,
               endTime: data.endTime,
@@ -425,6 +425,7 @@ async function testResult(res, ctx, id, userId, data) {
               //创建所有场次
               Array.from({ length: v.round }).forEach((j, i3) => {
                 let roundId = UUID.v4().replace(/-/g, "");
+                let groupList=['A','B','C','D','E','F','G','H','I','J','K']
                 arr2.push({
                   id: roundId,
                   roundStageId,
@@ -432,8 +433,8 @@ async function testResult(res, ctx, id, userId, data) {
                     index === 0
                       ? "-1"
                       : front[Math.ceil((i2 * v.round + i3 - 1) / 2)].id,
-                  roundName: v.name+"A组",
-                  groupName: "A组",
+                  roundName: v.name+`${groupList[i3]}组`,
+                  groupName: `${groupList[i3]}组`,
                   startTime: moment(data.endTime)
                     .subtract(index + 1, "days")
                     .format("YYYY-MM-DD HH:mm:ss"),

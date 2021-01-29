@@ -59,6 +59,11 @@ module.exports = (app) => {
         comment: "定制背景图（0：否，1：是）",
         defaultValue: "0",
       },
+      dataAnalysis:{
+        type: STRING(500),
+        comment: "数据分析",
+        defaultValue: "",
+      },
       ...base,
     },
     {

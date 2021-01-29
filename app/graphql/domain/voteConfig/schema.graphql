@@ -9,6 +9,7 @@ type VoteConfig implements Base {
   voteLevel: Int!
   voteQqVip: String!
   diyBg: String
+  dataAnalysis: String
   file: File
   createdAt: Date
   updatedAt: Date

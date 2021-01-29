@@ -1,0 +1,29 @@
+input CreateDataAnalysisInput {
+  voteId: String!
+  targetId: String!
+  typeId: String!
+  targetType: String!
+  value: String!
+  sort: Int
+  createBy: String
+  remark: String
+}
+input UpdateDataAnalysisInput {
+  voteId: String
+  targetId: String
+  typeId: String
+  targetType: String
+  value: String
+  sort: Int
+  status: String
+  remark: String
+  updateBy: String
+}
+input DataAnalysisFilter {
+  voteId: String
+  targetId: String
+  typeId: String
+  targetType: String
+  value: String
+  sort: Int
+}

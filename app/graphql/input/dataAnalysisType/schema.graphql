@@ -1,0 +1,17 @@
+input CreateDataAnalysisTypeInput {
+  name: String!
+  value: String!
+  createBy: String
+  remark: String
+}
+input UpdateDataAnalysisTypeInput {
+  name: String
+  value: String
+  status: String
+  remark: String
+  updateBy: String
+}
+input DataAnalysisTypeFilter {
+  name: String
+  value: String
+}
