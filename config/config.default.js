@@ -48,6 +48,11 @@ module.exports = () => {
         typeCast: true,
       },
       timezone: "+8:00",
+      pool: {
+		    max: 100,
+		    min: 0,
+		    acquire: 100*1000,
+		  }
     },
     proxyworker: {
       port: 10086,

@@ -13,6 +13,12 @@ module.exports = {
       where: {
         status: "5",
       },
+      include: [
+        {
+          as: "voteConfig",
+          model: ctx.app.model.VoteConfig,
+        },
+      ],
     });
 
     const data = res.map((v) => v.toJSON());
@@ -21,6 +27,52 @@ module.exports = {
     data.forEach(async(v) => {
       if (moment(v.endTime).valueOf() <= now) {
         times.push(v.id);
+        const dataAnalysis = v.VoteConfig.dataAnalysis
+        if(dataAnalysis) {
+          const dataAnalysisList= (await ctx.app.model.DataAnalysis.findAll({
+            where: {
+              status: "0"
+            },
+          })).map(item=>item.toJSON())
+          data.split(',').forEach(async item=>{
+            if(item==='vote_number') {
+              const count = await ctx.app.model.VoteRecord.count({
+                distinct: true,
+                where: {
+                  voteId: v.id
+                },
+                col:'userId'
+              })
+              const target = dataAnalysisList.find(k=>k.value===item)
+              await ctx.app.model.DataAnalysis.create({
+                voteId:v.id,
+                targetId:'-1',
+                typeId:target.id,
+                targetType: 'vote_number',
+                value:count,
+                sort:1
+              })
+            }
+            if(item==='get_vote_most_role') {
+              // const count = await ctx.app.model.VoteRecord.count({
+              //   distinct: true,
+              //   where: {
+              //     voteId: v.id
+              //   },
+              //   col:'userId'
+              // })
+              // const target = dataAnalysisList.find(k=>k.value===item)
+              // await ctx.app.model.DataAnalysis.create({
+              //   voteId:v.id,
+              //   targetId:'-1',
+              //   typeId:target.id,
+              //   targetType: 'get_vote_most_role',
+              //   value:count,
+              //   sort:1
+              // })
+            }
+          })
+        }
         const result = (
           await ctx.app.model.UserFollow.findAll({
             where: {
